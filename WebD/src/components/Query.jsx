@@ -4,12 +4,15 @@ import Button from "./Button";
 
 const Query = () => {
   const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(""); // Add this line
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
+    console.log(
+      `Name: ${name}, Phone Number: ${phoneNumber}, Email: ${email}, Message: ${message}`
+    );
   };
 
   return (
@@ -27,12 +30,20 @@ const Query = () => {
             className={`w-96 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
           />
           <input
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="Phone Number"
+            required
+            className={`w-96 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
+          />
+          <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
-            className={`w-84 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
+            className={`w-96 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
           />
           <textarea
             value={message}
