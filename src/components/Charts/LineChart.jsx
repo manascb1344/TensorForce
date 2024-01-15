@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChartComponent,
   SeriesCollectionDirective,
@@ -19,6 +19,25 @@ import { useStateContext } from "../../contexts/ContextProvider";
 
 const LineChart = () => {
   const { currentMode } = useStateContext();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const url = "https://open-weather13.p.rapidapi.com/city/vasai";
+    const options = {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": "98b38b6396msh4d291a1e7789857p15b702jsn528733c05c93",
+        "X-RapidAPI-Host": "open-weather13.p.rapidapi.com",
+      },
+    };
+
+    fetch(url, options)
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  console.log(data);
 
   return (
     <ChartComponent
