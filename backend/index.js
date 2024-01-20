@@ -9,7 +9,7 @@ app.use(cors());
 
 app.use(express.json());
 
-const uri = "mongodb://localhost:27017/customers";
+const uri = "mongodb+srv://zephop76593:test123@cluster0.rspjgzr.mongodb.net/?retryWrites=true&w=majority";
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
