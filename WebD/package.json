@@ -11,13 +11,19 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@emailjs/browser": "^3.12.1",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.5",
     "axios": "^1.6.5",
     "emailjs": "^4.0.3",
+    "framer-motion": "^10.18.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
+    "sass": "^1.70.0",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
