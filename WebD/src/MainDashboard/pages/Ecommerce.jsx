@@ -1,7 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { IoIosMore } from "react-icons/io";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import Chart from "react-apexcharts";
 
 import { Stacked, Pie, Button, LineChart, SparkLine } from "../components";
 import {
@@ -31,6 +32,40 @@ const DropDown = ({ currentMode }) => (
 );
 
 const Ecommerce = () => {
+  // const {state,setState} = useState({
+  //   options: {
+  //     chart: {
+  //       id: "basic-bar"
+  //     },
+  //     xaxis: {
+  //       categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+  //     }
+  //   },
+  //   series: [
+  //     {
+  //       name: "series-1",
+  //       data: [30, 40, 45, 50, 49, 60, 70, 91]
+  //     }
+  //   ]
+  // });
+  const [state, setState] = useState({
+    options: {
+      chart: {
+        id: "basic-bar"
+      },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      }
+    },
+    series: [
+      {
+        name: "series-1",
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }
+    ]
+  });
+  
+
   const { currentColor, currentMode } = useStateContext();
 
   return (
@@ -64,7 +99,7 @@ const Ecommerce = () => {
       <div className="flex gap-10 flex-wrap justify-center">
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
           <div className="flex justify-between">
-            <p className="font-semibold text-xl">Revenue Updates</p>
+            <p className="font-semibold text-xl">Your Portfolio</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-gray-600 hover:drop-shadow-xl">
                 <span></span>
@@ -85,7 +120,7 @@ const Ecommerce = () => {
                     23%
                   </span>
                 </p>
-                <p className="text-gray-500 mt-1">Budget</p>
+                <p className="text-gray-500 mt-1">Jan 20,11:54pm IST</p>
               </div>
               <div className="mt-8">
                 <p className="text-3xl font-semibold">$48,487</p>
@@ -93,7 +128,7 @@ const Ecommerce = () => {
                 <p className="text-gray-500 mt-1">Expense</p>
               </div>
 
-              <div className="mt-5">
+              {/* <div className="mt-5">
                 <SparkLine
                   currentColor={currentColor}
                   id="line-sparkLine"
@@ -111,11 +146,23 @@ const Ecommerce = () => {
                   text="Download Report"
                   borderRadius="10px"
                 />
-              </div>
+              </div> */}
             </div>
-            <div>
+            {/* <div>
+            <Chart
+              options={state.options}
+              series={state.series}
+              type="bar"
+              width="500"
+            />
               <Stacked currentMode={currentMode} width="320px" height="360px" />
-            </div>
+            </div> */}
+            <Chart
+              options={state.options}
+              series={state.series}
+              type="area"
+              width="500"
+            />
           </div>
         </div>
         <div>
