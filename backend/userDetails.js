@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+const customersUri = "mongodb://localhost:27017/customers";
+const customersConnection = mongoose.createConnection(customersUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+customersConnection.on("connected", () => {
+  console.log("Customers Database Connected");
+});
+
+customersConnection.on("error", (error) => {
+  console.error("Error connecting to Customers Database:", error);
+});
+
 const userDetailsSchema = new mongoose.Schema({
   user: [
     {
@@ -27,7 +41,7 @@ const userDetailsSchema = new mongoose.Schema({
   ],
 });
 
-const UserDetails = mongoose.model("UserDetails", userDetailsSchema);
+const UserDetails = customersConnection.model("UserDetails", userDetailsSchema);
 
 const getNextUserId = async () => {
   try {
