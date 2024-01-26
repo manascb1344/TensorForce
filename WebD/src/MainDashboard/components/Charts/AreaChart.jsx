@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const YourComponent = () => {
+const AreaChart = () => {
   const [state, setState] = useState({
     options: {
       chart: {
-        id: "basic-bar"
+        id: "basic-bar",
+        zoom: false,  // Disable zooming
+        pan: false,   // Disable panning
+        reset: false, // Disable reset button
+        menu: false,  // Disable menu
       },
       xaxis: {
-        categories: [] // Initialize with an empty array
+        categories: [] 
       }
     },
     series: [
       {
-        name: "series-1",
-        data: [] // Initialize with an empty array
+        name: "Price",
+        data: [] 
       }
     ]
   });
@@ -25,8 +29,8 @@ const YourComponent = () => {
         method: 'GET',
         headers: {
           accept: 'application/json',
-          'APCA-API-KEY-ID': 'PKP4BR5ZGYD610TTQQ6N',
-          'APCA-API-SECRET-KEY': 'v7JCfKUW2Hzr4yT60LsPUVMp9xNQBryebzeeS32u'
+          'APCA-API-KEY-ID': 'PKI1EBX5LM1D0WUN7WU5',
+          'APCA-API-SECRET-KEY': 'CxSsspL84jDujfTUxxGNhWibaexutf18Uf513ABM'
         }
       };
 
@@ -34,14 +38,17 @@ const YourComponent = () => {
         const response = await fetch('https://paper-api.alpaca.markets/v2/account/portfolio/history?intraday_reporting=market_hours&pnl_reset=per_day', apiOptions);
         const data = await response.json();
 
-        // Process the data to fit your chart structure
         const categories = data.timestamp.map(timestamp => new Date(timestamp).toLocaleTimeString());
         const seriesData = data.equity;
 
         setState({
           options: {
             chart: {
-              id: "basic-bar"
+              id: "basic-bar",
+              zoom: false,  // Disable zooming
+              pan: false,   // Disable panning
+              reset: false, // Disable reset button
+              menu: false,  // Disable menu
             },
             xaxis: {
               categories: categories
@@ -49,7 +56,7 @@ const YourComponent = () => {
           },
           series: [
             {
-              name: "series-1",
+              name: "Price",
               data: seriesData
             }
           ]
@@ -60,13 +67,13 @@ const YourComponent = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures useEffect runs only once on component mount
+  }, []); 
 
   return (
-    <div>
-      <Chart options={state.options} series={state.series} type="area" height={350} width={500} />
+    <div type>
+      <Chart options={state.options} series={state.series} type="line" height={400} width={700} />
     </div>
   );
 };
 
-export default YourComponent;
+export default AreaChart;
