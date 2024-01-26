@@ -4,8 +4,9 @@ import { IoIosMore } from "react-icons/io";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import Chart from "react-apexcharts";
 import GaugeChart from 'react-gauge-chart';
+import { Line } from 'react-chartjs-2';
 
-import { Stacked, Pie, Button, LineChart, SparkLine,MeterChart,DashBoardData } from "../components";
+import { Stacked, Pie, Button, LineChart, SparkLine,MeterChart,DashBoardData,AreaChart } from "../components";
 import {
   earningData,
   medicalproBranding,
@@ -49,22 +50,22 @@ const Ecommerce = () => {
   //     }
   //   ]
   // });
-  const [state, setState] = useState({
-    options: {
-      chart: {
-        id: "basic-bar"
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-      }
-    },
-    series: [
-      {
-        name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }
-    ]
-  });
+  // const [state, setState] = useState({
+  //   options: {
+  //     chart: {
+  //       id: "basic-bar"
+  //     },
+  //     xaxis: {
+  //       categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+  //     }
+  //   },
+  //   series: [
+  //     {
+  //       name: "series-1",
+  //       data: [30, 40, 45, 50, 49, 60, 70, 91]
+  //     }
+  //   ]
+  // });
   
 
   const { currentColor, currentMode } = useStateContext();
@@ -81,7 +82,7 @@ const Ecommerce = () => {
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
           <div className="flex justify-between">
             <p className="font-semibold text-xl">Your Portfolio</p>
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-gray-600 hover:drop-shadow-xl">
                 <span></span>
                 <span>Expense</span>
@@ -90,10 +91,10 @@ const Ecommerce = () => {
                 <span></span>
                 <span>Budget</span>
               </p>
-            </div>
+            </div> */}
           </div>
-          <div className="mt-10 flex gap-10 flex-wrap justify-center">
-            <div className=" border-r-1 border-color m-4 pr-10">
+          <div className="mt-10 flex gap-10 flex-wrap justify-center ">
+            {/* <div className=" border-r-1 border-color m-4 pr-10">
               <div>
                 <p>
                   <span className="text-3xl font-semibold">$93,438</span>
@@ -107,7 +108,7 @@ const Ecommerce = () => {
                 <p className="text-3xl font-semibold">$48,487</p>
 
                 <p className="text-gray-500 mt-1">Expense</p>
-              </div>
+              </div> */}
 
               {/* <div className="mt-5">
                 <SparkLine
@@ -128,7 +129,7 @@ const Ecommerce = () => {
                   borderRadius="10px"
                 />
               </div> */}
-            </div>
+            {/* </div> */}
             {/* <div>
             <Chart
               options={state.options}
@@ -138,12 +139,7 @@ const Ecommerce = () => {
             />
               <Stacked currentMode={currentMode} width="320px" height="360px" />
             </div> */}
-            <Chart
-              options={state.options}
-              series={state.series}
-              type="area"
-              width="500"
-            />
+            <AreaChart/>
           </div>
         </div>
         <div>
