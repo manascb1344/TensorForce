@@ -29,11 +29,16 @@ app.post("/api/createUser", async (req, res) => {
 
 app.post("/api/authenticate", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, apiKey, apiSecretKey } = req.body;
 
-    const existingUser = await UserDetails.findOne({
-      "user.email": email,
-    });
+    let query = { "user.email": email };
+
+    if (apiKey && apiSecretKey) {
+      query["user.apiKey"] = apiKey;
+      query["user.apiSecretKey"] = apiSecretKey;
+    }
+
+    const existingUser = await UserDetails.findOne(query);
 
     if (existingUser) {
       return res.json({ success: true, message: "Authentication Successful" });
@@ -123,6 +128,32 @@ app.post("/api/add-transaction/:userId", async (req, res) => {
   } catch (error) {
     console.error("Error adding transaction:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/api/updateKeys", async (req, res) => {
+  try {
+    const { email, apiKey, apiSecretKey } = req.body;
+
+    if (!email || !apiKey || !apiSecretKey) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const existingUser = await UserDetails.findOne({ "user.email": email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    existingUser.user[0].apiKey = apiKey;
+    existingUser.user[0].apiSecretKey = apiSecretKey;
+
+    await existingUser.save();
+
+    res.json({ message: "API Key and Secret Key updated successfully" });
+  } catch (error) {
+    console.error("Error updating keys:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

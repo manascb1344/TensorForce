@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const customersUri = "mongodb://localhost:27017/customers";
+const customersUri =
+  "mongodb+srv://customers:c2CyQh1vB8XyNqC5@cluster0.yh1mk1u.mongodb.net/customers";
 const customersConnection = mongoose.createConnection(customersUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -21,6 +22,8 @@ const userDetailsSchema = new mongoose.Schema({
       username: { type: String, unique: true },
       email: { type: String, unique: true },
       balance: { type: Number },
+      apiKey: { type: String },
+      apiSecretKey: { type: String },
     },
   ],
   transactions: [
@@ -45,12 +48,17 @@ const UserDetails = customersConnection.model("UserDetails", userDetailsSchema);
 
 const getNextUserId = async () => {
   try {
-    const result = await UserDetails.findOne()
+    const result = await UserDetails.find()
       .sort({ "user.user_id": -1 })
       .limit(1);
 
-    if (result && result.user && result.user.length > 0) {
-      const lastUserId = result.user[0].user_id;
+    if (
+      result &&
+      result.length > 0 &&
+      result[0].user &&
+      result[0].user.length > 0
+    ) {
+      const lastUserId = result[0].user[0].user_id;
       return lastUserId + 1;
     } else {
       return 1;
@@ -68,6 +76,10 @@ const generateUserIdAndSaveUser = async (userData) => {
     balance: 0,
     ...userData,
   };
+
+  if (!newUser.username) {
+    newUser.username = `user${user_id}`;
+  }
 
   try {
     const createdUser = await UserDetails.create({ user: newUser });
