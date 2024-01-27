@@ -1,67 +1,74 @@
-import React from "react";
-import {
-  ChartComponent,
-  SeriesCollectionDirective,
-  SeriesDirective,
-  Inject,
-  ColumnSeries,
-  Category,
-  Tooltip,
-  Legend,
-  RangeColorSettingsDirective,
-  RangeColorSettingDirective,
-} from "@syncfusion/ej2-react-charts";
-
-import {
-  colorMappingData,
-  ColorMappingPrimaryXAxis,
-  ColorMappingPrimaryYAxis,
-  rangeColorMapping,
-} from "../../data/dummy";
-import { ChartsHeader } from "../../components";
-import { useStateContext } from "../../contexts/ContextProvider";
+import React, { useEffect, useRef } from "react";
+import CalHeatMap from "cal-heatmap";
+import "cal-heatmap/cal-heatmap.css";
+import { Tooltip, TooltipComponent } from "@syncfusion/ej2-react-popups";
+Tooltip;
 
 const ColorMapping = () => {
-  const { currentMode } = useStateContext();
+  const calContainer = useRef(null);
+  const calLegend = useRef(null);
+
+  useEffect(() => {
+    if (calContainer.current && calLegend.current) {
+      const cal = new CalHeatMap();
+      const data = {
+        1704243600: 10,
+        1704330000: 20,
+        1704416400: 30,
+        1704502800: 40,
+      };
+      cal.paint(
+        {
+          data: data,
+          date: { start: new Date(2024, 0) },
+          range: 1,
+          scale: { color: { type: "linear", scheme: "PRGn", domain: [0, 40] } },
+          domain: { type: "year", label: { text: null } },
+          subDomain: { type: "day", radius: 2 },
+          itemSelector: calContainer.current,
+        }
+        // [
+        //   [
+        //     Tooltip,
+        //     {
+        //       text: function (date, value, dayjsDate) {
+        //         return (
+        //           (value ? value + "°C" : "No data") +
+        //           " on " +
+        //           dayjsDate.format("LL")
+        //         );
+        //       },
+        //     },
+        //   ],
+        // ]
+      );
+    }
+  }, []);
 
   return (
-    <div className="m-4 md:m-10 mt-24 p-10 bg-white dark:bg-secondary-dark-bg rounded-3xl">
-      <ChartsHeader
-        category="Color Mappping"
-        title="USA CLIMATE - WEATHER BY MONTH"
-      />
-      <div className="w-full">
-        <ChartComponent
-          id="charts"
-          primaryXAxis={ColorMappingPrimaryXAxis}
-          primaryYAxis={ColorMappingPrimaryYAxis}
-          chartArea={{ border: { width: 0 } }}
-          legendSettings={{ mode: "Range", background: "white" }}
-          tooltip={{ enable: true }}
-          background={currentMode === "Dark" ? "#33373E" : "#fff"}
-        >
-          <Inject services={[ColumnSeries, Tooltip, Category, Legend]} />
-          <SeriesCollectionDirective>
-            <SeriesDirective
-              dataSource={colorMappingData[0]}
-              name="USA"
-              xName="x"
-              yName="y"
-              type="Column"
-              cornerRadius={{
-                topLeft: 10,
-                topRight: 10,
-              }}
-            />
-          </SeriesCollectionDirective>
-          <RangeColorSettingsDirective>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            {rangeColorMapping.map((item, index) => (
-              <RangeColorSettingDirective key={index} {...item} />
-            ))}
-          </RangeColorSettingsDirective>
-        </ChartComponent>
-      </div>
+    <div>
+      <div ref={calContainer} className="margin-bottom--md"></div>
+      <a
+        className="button button--sm button--secondary margin-top--sm"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          cal.previous();
+        }}
+      >
+        ← Previous
+      </a>
+      <a
+        className="button button--sm button--secondary margin-top--sm margin-left--xs"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          cal.next();
+        }}
+      >
+        Next →
+      </a>
+      <div ref={calLegend} style={{ float: "right" }}></div>
     </div>
   );
 };

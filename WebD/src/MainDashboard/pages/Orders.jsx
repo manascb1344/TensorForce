@@ -20,6 +20,11 @@ const Orders = () => {
   const [modelDetails, setModelDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const orderButtonTemplate = `
+    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Place Order
+    </button>
+  `;
 
   useEffect(() => {
     const fetchModelDetails = async () => {
@@ -59,7 +64,7 @@ const Orders = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Orders" />
+      <Header category="Page" title="Shop" />
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
@@ -92,6 +97,12 @@ const Orders = () => {
             />
 
             <ColumnDirective field="price" headerText="Price" />
+            <ColumnDirective
+              headerText="Order"
+              template={orderButtonTemplate}
+              textAlign="Center"
+              width="150"
+            />
           </ColumnsDirective>
           <Inject
             services={[

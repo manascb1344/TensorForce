@@ -17,6 +17,7 @@
 		"@syncfusion/ej2-react-grids": "^24.1.47",
 		"@syncfusion/ej2-react-popups": "^24.1.46",
 		"axios": "^1.6.5",
+		"cal-heatmap": "^4.2.4",
 		"emailjs": "^4.0.3",
 		"localforage": "^1.10.0",
 		"match-sorter": "^6.3.3",
