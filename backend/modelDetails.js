@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const modelsUri = "mongodb://localhost:27017/models";
+const modelsUri =
+  "mongodb+srv://customers:c2CyQh1vB8XyNqC5@cluster0.yh1mk1u.mongodb.net/models";
 const modelsConnection = mongoose.createConnection(modelsUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
