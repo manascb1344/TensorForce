@@ -26,9 +26,14 @@ const modelDetailsSchema = new mongoose.Schema({
     },
   ],
   price: { type: Number },
+  buyers: [
+    {
+      apiKey: { type: String },
+      apiSecretKey: { type: String },
+    },
+  ],
 });
 
-// Use "modeldetail" instead of "modeldetails" as the collection name
 const ModelDetails = modelsConnection.model("modeldetail", modelDetailsSchema);
 
 export default ModelDetails;

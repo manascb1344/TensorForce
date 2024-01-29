@@ -106,6 +106,36 @@ app.post("/api/models/add", async (req, res) => {
   }
 });
 
+app.post("/api/models/:model_id/buyers/add", async (req, res) => {
+  try {
+    const { model_id } = req.params;
+    const { apiKey, apiSecretKey } = req.body;
+
+    // Validate required fields
+    if (!apiKey || !apiSecretKey) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    // Find the model by model_id
+    const model = await ModelDetails.findOne({ model_id });
+
+    if (!model) {
+      return res.status(404).json({ error: "Model not found." });
+    }
+
+    // Add the new buyer to the buyers array
+    model.buyers.push({ apiKey, apiSecretKey });
+
+    // Save the updated model to the database
+    await model.save();
+
+    return res.status(200).json({ message: "Buyer added successfully." });
+  } catch (error) {
+    console.error("Error adding buyer:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.post("/api/add-transaction/:userId", async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
@@ -154,6 +184,27 @@ app.put("/api/updateKeys", async (req, res) => {
   } catch (error) {
     console.error("Error updating keys:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/api/users/:email/keys", async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    // Find the user by email
+    const user = await UserDetails.findOne({ "user.email": email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Extract the API Key and Secret Key
+    const { apiKey, apiSecretKey } = user.user[0];
+
+    return res.status(200).json({ apiKey, apiSecretKey });
+  } catch (error) {
+    console.error("Error fetching keys:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
