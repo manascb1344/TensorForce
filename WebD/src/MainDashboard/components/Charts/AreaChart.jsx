@@ -6,19 +6,19 @@ const AreaChart = () => {
     options: {
       chart: {
         id: "basic-bar",
-        zoom: false,  // Disable zooming
-        pan: false,   // Disable panning
-        reset: false, // Disable reset button
-        menu: false,  // Disable menu
+        zoom: false,
+        pan: false,
+        reset: false,
+        menu: false,
       },
       xaxis: {
-        categories: [] 
+        categories: []
       }
     },
     series: [
       {
         name: "Price",
-        data: [] 
+        data: []
       }
     ]
   });
@@ -38,17 +38,21 @@ const AreaChart = () => {
         const response = await fetch('https://paper-api.alpaca.markets/v2/account/portfolio/history?intraday_reporting=market_hours&pnl_reset=per_day', apiOptions);
         const data = await response.json();
 
-        const categories = data.timestamp.map(timestamp => new Date(timestamp).toLocaleTimeString());
+        const categories = data.timestamp.map(timestamp => {
+          const dateObject = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+          return dateObject.toLocaleDateString();
+        });
+
         const seriesData = data.equity;
 
         setState({
           options: {
             chart: {
               id: "basic-bar",
-              zoom: false,  // Disable zooming
-              pan: false,   // Disable panning
-              reset: false, // Disable reset button
-              menu: false,  // Disable menu
+              zoom: false,
+              pan: false,
+              reset: false,
+              menu: false,
             },
             xaxis: {
               categories: categories
@@ -67,7 +71,7 @@ const AreaChart = () => {
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <div type>
