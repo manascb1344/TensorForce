@@ -7,12 +7,20 @@ import {
   generateUserIdAndSaveUser,
 } from "./userDetails.js";
 import ModelDetails from "./modelDetails.js";
+import Alpaca from "@alpacahq/alpaca-trade-api";
 
 const app = express();
 
 app.use(cors());
 
 app.use(express.json());
+
+const alpaca = new Alpaca({
+  keyId: "PKXQ63AJJLRUQHYJKLIS",
+  secretKey: "uWrne0JlFVcXEn8Be8qpl5dVtg9e06H8bhdXDs8J",
+  paper: true, // Set to 'false' for live trading
+  usePolygon: false, // Set to 'true' to use Polygon data
+});
 
 app.post("/api/createUser", async (req, res) => {
   const formData = req.body;
@@ -224,6 +232,16 @@ app.get("/api/models/:model_id/buyers", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/fetchAlpacaData", async (req, res) => {
+  try {
+    const data = await alpaca.getAccount();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from Alpaca API:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
