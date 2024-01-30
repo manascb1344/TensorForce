@@ -1,74 +1,83 @@
-import React, { useEffect, useRef } from "react";
-import CalHeatMap from "cal-heatmap";
-import "cal-heatmap/cal-heatmap.css";
-import { Tooltip, TooltipComponent } from "@syncfusion/ej2-react-popups";
-Tooltip;
+import React from "react";
+import CalendarHeatmap from "react-calendar-heatmap";
+import "./styles.css";
+import { Header } from "../../components";
+import axios from "axios";
 
 const ColorMapping = () => {
-  const calContainer = useRef(null);
-  const calLegend = useRef(null);
+  const fetchAlpacaData = async () => {
+    const apiKeyId = "API_KEY_1";
+    const secretKey = "SECRET_KEY_1";
 
-  useEffect(() => {
-    if (calContainer.current && calLegend.current) {
-      const cal = new CalHeatMap();
-      const data = {
-        1704243600: 10,
-        1704330000: 20,
-        1704416400: 30,
-        1704502800: 40,
-      };
-      cal.paint(
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/fetchAlpacaData",
         {
-          data: data,
-          date: { start: new Date(2024, 0) },
-          range: 1,
-          scale: { color: { type: "linear", scheme: "PRGn", domain: [0, 40] } },
-          domain: { type: "year", label: { text: null } },
-          subDomain: { type: "day", radius: 2 },
-          itemSelector: calContainer.current,
+          headers: {
+            "Content-Type": "application/json",
+            "APCA-API-KEY-ID": apiKeyId,
+            "APCA-API-SECRET-KEY": secretKey,
+          },
         }
-        // [
-        //   [
-        //     Tooltip,
-        //     {
-        //       text: function (date, value, dayjsDate) {
-        //         return (
-        //           (value ? value + "°C" : "No data") +
-        //           " on " +
-        //           dayjsDate.format("LL")
-        //         );
-        //       },
-        //     },
-        //   ],
-        // ]
       );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching data from Alpaca API:", error.message);
     }
-  }, []);
+  };
+
+  // Call the function to fetch and log Alpaca data
+  fetchAlpacaData();
+
+  let randomNumbers = Array.from(
+    { length: 365 },
+    () => Math.floor(Math.random() * 100) - 50
+  );
+  let timestamp = Array.from({ length: 365 }, (_, i) => {
+    let date = new Date();
+    date.setDate(date.getDate() - i);
+    return Math.floor(date.getTime() / 1000);
+  }).reverse();
+  const data = {
+    timestamp: timestamp,
+    profit_loss: randomNumbers,
+  };
+
+  // Convert UNIX timestamp to normal time and prepare data for heatmap
+  const heatmapData = data.timestamp.map((ts, i) => {
+    const date = new Date(ts * 1000);
+    return {
+      date: date.toISOString().split("T")[0], // get date in 'YYYY-MM-DD' format
+      count: data.profit_loss[i] === null ? 0 : data.profit_loss[i],
+    };
+  });
+
+  console.log("heatmapData:", heatmapData);
 
   return (
-    <div>
-      <div ref={calContainer} className="margin-bottom--md"></div>
-      <a
-        className="button button--sm button--secondary margin-top--sm"
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          cal.previous();
-        }}
-      >
-        ← Previous
-      </a>
-      <a
-        className="button button--sm button--secondary margin-top--sm margin-left--xs"
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          cal.next();
-        }}
-      >
-        Next →
-      </a>
-      <div ref={calLegend} style={{ float: "right" }}></div>
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+      <Header title="Your HeatMap" />
+      <div className="heatmap">
+        <CalendarHeatmap
+          startDate={new Date(data.timestamp[0] * 1000)}
+          endDate={new Date(data.timestamp[data.timestamp.length - 1] * 1000)}
+          values={heatmapData}
+          classForValue={(value) => {
+            if (!value) {
+              return "color-empty";
+            }
+            var scaledCount = 0;
+            if (value.count < 0) {
+              scaledCount = Math.abs(value.count) / 10 + 6;
+              return `color-gitlab-${Math.floor(scaledCount)}`;
+            } else {
+              scaledCount = value.count / 10 + 1;
+              return `color-github-${Math.floor(scaledCount)}`;
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };
