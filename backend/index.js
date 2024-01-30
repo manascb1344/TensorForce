@@ -208,4 +208,23 @@ app.get("/api/users/:email/keys", async (req, res) => {
   }
 });
 
+app.get("/api/models/:model_id/buyers", async (req, res) => {
+  const { model_id } = req.params;
+
+  try {
+    // Fetch the model from the database
+    const model = await ModelDetails.findOne({ model_id: model_id });
+
+    if (!model) {
+      return res.status(404).json({ message: "Model not found" });
+    }
+
+    // Return the buyers array
+    res.json(model.buyers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.listen(5000, () => console.log("App is Running"));
