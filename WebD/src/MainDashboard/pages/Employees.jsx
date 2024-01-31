@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   GridComponent,
   Inject,
@@ -9,35 +9,73 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 
-import { employeesData, employeesGrid } from "../data/dummy";
 import { Header } from "../components";
 
 const Employees = () => {
+  const [data, setData] = useState({ gainers: [], losers: [] });
   const toolbarOptions = ["Search"];
+  const editing = { allowDeleting: false, allowEditing: false };
 
-  const editing = { allowDeleting: true, allowEditing: true };
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "APCA-API-KEY-ID": "PKXQ63AJJLRUQHYJKLIS",
+        "APCA-API-SECRET-KEY": "uWrne0JlFVcXEn8Be8qpl5dVtg9e06H8bhdXDs8J",
+      },
+    };
+
+    fetch(
+      "https://data.alpaca.markets/v1beta1/screener/stocks/movers?top=10",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => setData(response))
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Employees" />
+      <Header category="Page" title="Stocks" />
+      <h2>Gainers</h2>
       <GridComponent
-        dataSource={employeesData}
+        dataSource={data.gainers}
         width="auto"
         allowPaging
         allowSorting
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Search"]}
+        toolbar={toolbarOptions}
       >
         <ColumnsDirective>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          {employeesGrid.map((item, index) => (
-            <ColumnDirective key={index} {...item} />
-          ))}
+          <ColumnDirective field="symbol" headerText="Symbol" />
+          <ColumnDirective field="price" headerText="Price" />
+          <ColumnDirective field="change" headerText="Change" />
+          <ColumnDirective field="percent_change" headerText="Percent Change" />
+        </ColumnsDirective>
+        <Inject services={[Search, Page, Toolbar]} />
+      </GridComponent>
+      <h2>Losers</h2>
+      <GridComponent
+        dataSource={data.losers}
+        width="auto"
+        allowPaging
+        allowSorting
+        pageSettings={{ pageCount: 5 }}
+        editSettings={editing}
+        toolbar={toolbarOptions}
+      >
+        <ColumnsDirective>
+          <ColumnDirective field="symbol" headerText="Symbol" />
+          <ColumnDirective field="price" headerText="Price" />
+          <ColumnDirective field="change" headerText="Change" />
+          <ColumnDirective field="percent_change" headerText="Percent Change" />
         </ColumnsDirective>
         <Inject services={[Search, Page, Toolbar]} />
       </GridComponent>
     </div>
   );
 };
+
 export default Employees;
