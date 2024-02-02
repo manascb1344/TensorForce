@@ -112,7 +112,7 @@ const Orders = () => {
   const editing = { allowDeleting: false, allowEditing: false };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-secondary-dark-bg rounded-3xl">
       <Header title="Shop" />
 
       {loading && <p>Loading...</p>}
@@ -129,7 +129,7 @@ const Orders = () => {
           contextMenuItems={[]}
           editSettings={editing}
         >
-          <ColumnsDirective>
+          <ColumnsDirective className="bg-secondary-dark-bg">
             <ColumnDirective field="model_id" headerText="Model ID" />
             <ColumnDirective field="model_name" headerText="Model Name" />
             <ColumnDirective field="description" headerText="Description" />

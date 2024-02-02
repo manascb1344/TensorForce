@@ -245,4 +245,26 @@ app.get("/fetchAlpacaData", async (req, res) => {
   }
 });
 
+app.get("/news", async (req, res) => {
+  const options = {
+    method: "GET",
+    headers: {
+      "Apca-Api-Key-Id": "PKXQ63AJJLRUQHYJKLIS",
+      "Apca-Api-Secret-Key": "uWrne0JlFVcXEn8Be8qpl5dVtg9e06H8bhdXDs8J",
+    },
+  };
+
+  try {
+    const response = await fetch(
+      "https://data.alpaca.markets/v1beta1/news",
+      options
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.listen(5000, () => console.log("App is Running"));

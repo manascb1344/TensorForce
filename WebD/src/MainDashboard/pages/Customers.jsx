@@ -6,16 +6,10 @@ const Customers = () => {
   const { isSubmitted, handleSubmit } = useStateContext();
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-secondary-dark-bg text-white rounded-3xl">
       <Header title="Partner With Us" />
       {isSubmitted ? (
-        <p
-          style={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
+        <p className="text-center text-xl font-bold">
           Your model is under review by our team. Hang on tight!
         </p>
       ) : (
@@ -23,7 +17,7 @@ const Customers = () => {
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                 htmlFor="grid-first-name"
               >
                 First Name
@@ -37,7 +31,7 @@ const Customers = () => {
             </div>
             <div className="w-full md:w-1/2 px-3">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                 htmlFor="grid-last-name"
               >
                 Last Name
@@ -53,7 +47,7 @@ const Customers = () => {
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                 htmlFor="grid-email"
               >
                 Email
@@ -69,7 +63,7 @@ const Customers = () => {
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                 htmlFor="grid-github-repo"
               >
                 GitHub Repo of Your Model
