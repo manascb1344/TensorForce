@@ -1,48 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./styles.css";
 import { Header } from "../../components";
 import axios from "axios";
 
-const ColorMapping = () => {
+const HeatMap = () => {
+  const [data, setData] = useState({ timestamp: [], profit_loss: [] });
+
   const fetchAlpacaData = async () => {
-    const apiKeyId = "API_KEY_1";
-    const secretKey = "SECRET_KEY_1";
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "APCA-API-KEY-ID": "PKZMNP63HL85U73H6BYY",
+        "APCA-API-SECRET-KEY": "UoE2qOlDId6PIU0j08L5qOtH2tgZNYuFTf6RQ42J",
+      },
+    };
 
     try {
-      const response = await axios.get(
-        "http://localhost:5000/fetchAlpacaData",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "APCA-API-KEY-ID": apiKeyId,
-            "APCA-API-SECRET-KEY": secretKey,
-          },
-        }
+      const response = await fetch(
+        "https://paper-api.alpaca.markets/v2/account/portfolio/history?period=1A&timeframe=1D&intraday_reporting=market_hours&pnl_reset=per_day",
+        options
       );
+      const responseData = await response.json();
 
-      console.log(response.data);
+      const { timestamp, profit_loss } = responseData;
+      setData({ timestamp, profit_loss });
     } catch (error) {
       console.error("Error fetching data from Alpaca API:", error.message);
     }
   };
 
-  // Call the function to fetch and log Alpaca data
-  fetchAlpacaData();
-
-  let randomNumbers = Array.from(
-    { length: 365 },
-    () => Math.floor(Math.random() * 100) - 50
-  );
-  let timestamp = Array.from({ length: 365 }, (_, i) => {
-    let date = new Date();
-    date.setDate(date.getDate() - i);
-    return Math.floor(date.getTime() / 1000);
-  }).reverse();
-  const data = {
-    timestamp: timestamp,
-    profit_loss: randomNumbers,
-  };
+  useEffect(() => {
+    // Call the function to fetch and log Alpaca data
+    fetchAlpacaData();
+  }, []);
 
   // Convert UNIX timestamp to normal time and prepare data for heatmap
   const heatmapData = data.timestamp.map((ts, i) => {
@@ -82,4 +74,4 @@ const ColorMapping = () => {
   );
 };
 
-export default ColorMapping;
+export default HeatMap;
