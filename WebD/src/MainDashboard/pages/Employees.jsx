@@ -17,29 +17,42 @@ const Employees = () => {
       {data.news.map((item, index) => (
         <div
           key={index}
-          className="p-4 border-2 border-gray-200 rounded-lg mb-4"
+          className="p-4 border-2 border-gray-200 rounded-lg mb-4 flex"
         >
-          <h2 className="font-bold text-xl mb-2">{item.headline}</h2>
-          <p className="text-gray-100">{item.summary}</p>
-          <p className="text-sm text-gray-200">Author: {item.author}</p>
-          <p className="text-sm text-gray-200">
-            Created At: {new Date(item.created_at).toLocaleString()}
-          </p>
-          <p className="text-sm text-gray-200">
-            Updated At: {new Date(item.updated_at).toLocaleString()}
-          </p>
-          <p className="text-sm text-gray-200">Source: {item.source}</p>
-          <p className="text-sm text-gray-200">
-            Symbols: {item.symbols.join(", ")}
-          </p>
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            Read more
-          </a>
+          <div className="flex-grow">
+            <h2 className="font-bold text-xl mb-2">{item.headline}</h2>
+            <p className="text-gray-100">{item.summary}</p>
+            <p className="text-sm text-gray-200">Author: {item.author}</p>
+            <p className="text-sm text-gray-200">
+              Created At: {new Date(item.created_at).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-200">
+              Updated At: {new Date(item.updated_at).toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-200">Source: {item.source}</p>
+            <p className="text-sm text-gray-200">
+              Symbols: {item.symbols.join(", ")}
+            </p>
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              Read more
+            </a>
+          </div>
+          {item.images &&
+            item.images
+              .filter((image) => image.size === "thumb")
+              .map((image, i) => (
+                <img
+                  key={i}
+                  src={image.url}
+                  alt={item.headline}
+                  className="ml-4"
+                />
+              ))}
         </div>
       ))}
     </div>
