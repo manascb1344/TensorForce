@@ -18,7 +18,7 @@ const CardDeal = () => {
       <div className={layout.sectionInfo}>
         <h2 className={styles.heading2}>
           Track your Performance <br className="sm:block hidden" />& Improve
-          your Stratergies.
+          your Strategies.
         </h2>
         <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
           With our performance tracker, you can easily monitor and analyze your
