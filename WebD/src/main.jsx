@@ -19,7 +19,7 @@ const AppWrapper = () => {
 			}}
 		>
 			<ContextProvider>
-				<Router basename="https://tensorforce.netlify.app/">
+				<Router>
 					<AppRoutes />
 				</Router>
 			</ContextProvider>

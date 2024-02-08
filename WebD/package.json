@@ -1,7 +1,6 @@
 {
 	"name": "project",
 	"private": true,
-	"homepage": "https://tensorforce.netlify.app/",
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
