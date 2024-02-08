@@ -107,7 +107,7 @@ const Dashv2 = () => {
 							{themeSettings && <ThemeSettings />}
 							<Routes>
 								{/* Dashboard */}
-								<Route path="/" element={<Dashboard />} />
+								<Route exact path="/" element={<Dashboard />} />
 								<Route path="/dashboard" element={<Dashboard />} />
 
 								{/* {Pages} */}

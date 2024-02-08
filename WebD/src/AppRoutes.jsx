@@ -32,7 +32,7 @@ const AppRoutes = () => {
 
 	return !isLoading ? (
 		<Routes>
-			<Route path="/" element={<App />} />
+			<Route exact path="/" element={<App />} />
 			<Route path="/login" element={<Login />} />
 			<Route path="/contact" element={<Contact />} />
 			<Route
