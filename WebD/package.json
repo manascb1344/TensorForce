@@ -21,6 +21,7 @@
 		"cal-heatmap": "^4.2.4",
 		"emailjs": "^4.0.3",
 		"localforage": "^1.10.0",
+		"lottie-web": "^5.12.2",
 		"match-sorter": "^6.3.3",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
