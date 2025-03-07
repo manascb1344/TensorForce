@@ -23,7 +23,7 @@ cffi==1.16.0
 charset-normalizer==3.3.2
 click==8.1.7
 contourpy==1.2.0
-cryptography==43.0.1
+cryptography==44.0.1
 cycler==0.12.1
 decorator==5.1.1
 deprecation==2.1.0
@@ -152,7 +152,7 @@ torchaudio==2.1.2
 torchvision==0.16.2
 tqdm==4.66.3
 traitlets==5.14.1
-transformers==4.38.0
+transformers==4.48.0
 triton==2.1.0
 typing_extensions==4.9.0
 tzdata==2023.4
