@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import StockContext from "../context/StockContext";
+import React, { useContext } from 'react';
+import StockContext from '../context/StockContext';
 const SearchResults = ({ results }) => {
 	const { setStockSymbol } = useContext(StockContext);
 
@@ -7,7 +7,7 @@ const SearchResults = ({ results }) => {
 		<ul
 			className={`absolute top-12 border-2 w-full rounded-md h-64 overflow-y-scroll bg-gray-900 border-gray-800 custom-scrollbar custom-scrollbar-dark`}
 		>
-			{results.map((item) => {
+			{results.map(item => {
 				return (
 					<li
 						key={item.symbol}

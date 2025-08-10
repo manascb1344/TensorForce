@@ -1,5 +1,5 @@
-import React from "react";
-import Dashboard from "./components/Dashboard";
+import React from 'react';
+import Dashboard from './components/Dashboard';
 
 /**
  * Company Financials component

@@ -6,11 +6,11 @@ import Loading from './Loading.jsx';
  * Provides consistent loading state across the app
  */
 const LoadingComponent = () => {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-primary">
-      <Loading />
-    </div>
-  );
+	return (
+		<div className='flex items-center justify-center min-h-screen bg-primary'>
+			<Loading />
+		</div>
+	);
 };
 
 export default LoadingComponent;

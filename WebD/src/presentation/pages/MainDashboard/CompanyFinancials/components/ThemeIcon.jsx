@@ -26,12 +26,10 @@
 // };
 
 // export default ThemeIcon;
-import React from 'react'
+import React from 'react';
 
 const ThemeIcon = () => {
-	return (
-		<div>ThemeIcon</div>
-	)
-}
+	return <div>ThemeIcon</div>;
+};
 
-export default ThemeIcon
+export default ThemeIcon;

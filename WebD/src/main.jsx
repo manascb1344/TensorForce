@@ -8,19 +8,19 @@ import AppRoutes from './presentation/pages/AppRoutes.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Auth0Provider
-      domain={AUTH0_CONFIG.DOMAIN}
-      clientId={AUTH0_CONFIG.CLIENT_ID}
-      authorizationParams={{
-        redirect_uri: AUTH0_CONFIG.REDIRECT_URI,
-      }}
-    >
-      <BrowserRouter>
-        <AppContextProvider>
-          <AppRoutes />
-        </AppContextProvider>
-      </BrowserRouter>
-    </Auth0Provider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Auth0Provider
+			domain={AUTH0_CONFIG.DOMAIN}
+			clientId={AUTH0_CONFIG.CLIENT_ID}
+			authorizationParams={{
+				redirect_uri: AUTH0_CONFIG.REDIRECT_URI,
+			}}
+		>
+			<BrowserRouter>
+				<AppContextProvider>
+					<AppRoutes />
+				</AppContextProvider>
+			</BrowserRouter>
+		</Auth0Provider>
+	</React.StrictMode>
 );

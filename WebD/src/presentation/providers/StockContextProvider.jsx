@@ -8,13 +8,11 @@ const StockContext = createContext();
  * Provides stock data and operations to components
  */
 export const StockContextProvider = ({ children }) => {
-  const stockData = useStock();
+	const stockData = useStock();
 
-  return (
-    <StockContext.Provider value={stockData}>
-      {children}
-    </StockContext.Provider>
-  );
+	return (
+		<StockContext.Provider value={stockData}>{children}</StockContext.Provider>
+	);
 };
 
 /**
@@ -22,9 +20,9 @@ export const StockContextProvider = ({ children }) => {
  * @returns {Object} Stock context value
  */
 export const useStockContext = () => {
-  const context = useContext(StockContext);
-  if (!context) {
-    throw new Error('useStockContext must be used within StockContextProvider');
-  }
-  return context;
+	const context = useContext(StockContext);
+	if (!context) {
+		throw new Error('useStockContext must be used within StockContextProvider');
+	}
+	return context;
 };

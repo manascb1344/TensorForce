@@ -8,67 +8,67 @@ import { isValidStockSymbol } from '../../shared/utils/validation.js';
  * Handles stock data fetching and state management
  */
 export const useStock = () => {
-  const [stockSymbol, setStockSymbol] = useState('MSFT');
-  const [stock, setStock] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+	const [stockSymbol, setStockSymbol] = useState('MSFT');
+	const [stock, setStock] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
 
-  const stockRepository = new AlpacaApiService();
-  const getStockQuoteUseCase = new GetStockQuoteUseCase(stockRepository);
+	const stockRepository = new AlpacaApiService();
+	const getStockQuoteUseCase = new GetStockQuoteUseCase(stockRepository);
 
-  const fetchStockQuote = async (symbol) => {
-    if (!isValidStockSymbol(symbol)) {
-      setError('Invalid stock symbol');
-      return;
-    }
+	const fetchStockQuote = async symbol => {
+		if (!isValidStockSymbol(symbol)) {
+			setError('Invalid stock symbol');
+			return;
+		}
 
-    setIsLoading(true);
-    setError(null);
+		setIsLoading(true);
+		setError(null);
 
-    try {
-      const result = await getStockQuoteUseCase.execute(symbol);
-      
-      if (result.success) {
-        setStock(result.stock);
-      } else {
-        setError(result.error);
-        setStock(null);
-      }
-    } catch (error) {
-      setError(error.message);
-      setStock(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+		try {
+			const result = await getStockQuoteUseCase.execute(symbol);
 
-  const updateStockSymbol = (newSymbol) => {
-    if (newSymbol && newSymbol !== stockSymbol) {
-      setStockSymbol(newSymbol.toUpperCase());
-      fetchStockQuote(newSymbol.toUpperCase());
-    }
-  };
+			if (result.success) {
+				setStock(result.stock);
+			} else {
+				setError(result.error);
+				setStock(null);
+			}
+		} catch (error) {
+			setError(error.message);
+			setStock(null);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-  const refreshStockData = () => {
-    if (stockSymbol) {
-      fetchStockQuote(stockSymbol);
-    }
-  };
+	const updateStockSymbol = newSymbol => {
+		if (newSymbol && newSymbol !== stockSymbol) {
+			setStockSymbol(newSymbol.toUpperCase());
+			fetchStockQuote(newSymbol.toUpperCase());
+		}
+	};
 
-  // Auto-fetch stock data when symbol changes
-  useEffect(() => {
-    if (stockSymbol) {
-      fetchStockQuote(stockSymbol);
-    }
-  }, [stockSymbol]);
+	const refreshStockData = () => {
+		if (stockSymbol) {
+			fetchStockQuote(stockSymbol);
+		}
+	};
 
-  return {
-    stock,
-    stockSymbol,
-    isLoading,
-    error,
-    updateStockSymbol,
-    refreshStockData,
-    setStockSymbol,
-  };
+	// Auto-fetch stock data when symbol changes
+	useEffect(() => {
+		if (stockSymbol) {
+			fetchStockQuote(stockSymbol);
+		}
+	}, [stockSymbol]);
+
+	return {
+		stock,
+		stockSymbol,
+		isLoading,
+		error,
+		updateStockSymbol,
+		refreshStockData,
+		setStockSymbol,
+	};
 };

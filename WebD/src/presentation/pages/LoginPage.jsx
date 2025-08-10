@@ -6,7 +6,7 @@ import Login from './Login/Login.jsx';
  * Wrapper for the login functionality
  */
 const LoginPage = () => {
-  return <Login />;
+	return <Login />;
 };
 
 export default LoginPage;

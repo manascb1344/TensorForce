@@ -9,50 +9,50 @@ import { User } from '../../core/domain/User.js';
  * Handles Auth0 integration and user authentication
  */
 export const useAuth = () => {
-  const { user, isAuthenticated, isLoading, error } = useAuth0();
-  const [authUser, setAuthUser] = useState(null);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [authError, setAuthError] = useState(null);
+	const { user, isAuthenticated, isLoading, error } = useAuth0();
+	const [authUser, setAuthUser] = useState(null);
+	const [isAuthenticating, setIsAuthenticating] = useState(false);
+	const [authError, setAuthError] = useState(null);
 
-  const userRepository = new UserApiService();
-  const authenticateUseCase = new AuthenticateUserUseCase(userRepository);
+	const userRepository = new UserApiService();
+	const authenticateUseCase = new AuthenticateUserUseCase(userRepository);
 
-  useEffect(() => {
-    const handleAuthentication = async () => {
-      if (isAuthenticated && user && !authUser) {
-        setIsAuthenticating(true);
-        setAuthError(null);
+	useEffect(() => {
+		const handleAuthentication = async () => {
+			if (isAuthenticated && user && !authUser) {
+				setIsAuthenticating(true);
+				setAuthError(null);
 
-        try {
-          const result = await authenticateUseCase.execute(user);
-          
-          if (result.success) {
-            setAuthUser(result.user);
-          } else {
-            setAuthError(result.error);
-          }
-        } catch (error) {
-          setAuthError(error.message);
-        } finally {
-          setIsAuthenticating(false);
-        }
-      }
-    };
+				try {
+					const result = await authenticateUseCase.execute(user);
 
-    handleAuthentication();
-  }, [isAuthenticated, user, authUser]);
+					if (result.success) {
+						setAuthUser(result.user);
+					} else {
+						setAuthError(result.error);
+					}
+				} catch (error) {
+					setAuthError(error.message);
+				} finally {
+					setIsAuthenticating(false);
+				}
+			}
+		};
 
-  const logout = () => {
-    setAuthUser(null);
-    setAuthError(null);
-  };
+		handleAuthentication();
+	}, [isAuthenticated, user, authUser]);
 
-  return {
-    user: authUser,
-    isAuthenticated: !!authUser,
-    isLoading: isLoading || isAuthenticating,
-    error: authError || error,
-    logout,
-    rawUser: user, // Original Auth0 user object
-  };
+	const logout = () => {
+		setAuthUser(null);
+		setAuthError(null);
+	};
+
+	return {
+		user: authUser,
+		isAuthenticated: !!authUser,
+		isLoading: isLoading || isAuthenticating,
+		error: authError || error,
+		logout,
+		rawUser: user, // Original Auth0 user object
+	};
 };

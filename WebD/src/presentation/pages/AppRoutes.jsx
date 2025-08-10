@@ -13,8 +13,8 @@ import LoadingComponent from '../components/LoadingComponent.jsx';
  * Redirects to login if user is not authenticated
  */
 const ProtectedRoute = ({ element }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? element : <Navigate to="/login" />;
+	const { isAuthenticated } = useAuth();
+	return isAuthenticated ? element : <Navigate to='/login' />;
 };
 
 /**
@@ -22,24 +22,24 @@ const ProtectedRoute = ({ element }) => {
  * Handles routing and authentication
  */
 const AppRoutes = () => {
-  const { isLoading } = useAuth();
+	const { isLoading } = useAuth();
 
-  if (isLoading) {
-    return <LoadingComponent />;
-  }
+	if (isLoading) {
+		return <LoadingComponent />;
+	}
 
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route
-        path="/dashboard/*"
-        element={<ProtectedRoute element={<DashboardPage />} />}
-      />
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
-  );
+	return (
+		<Routes>
+			<Route path='/' element={<LandingPage />} />
+			<Route path='/login' element={<LoginPage />} />
+			<Route path='/contact' element={<ContactPage />} />
+			<Route
+				path='/dashboard/*'
+				element={<ProtectedRoute element={<DashboardPage />} />}
+			/>
+			<Route path='*' element={<ErrorPage />} />
+		</Routes>
+	);
 };
 
 export default AppRoutes;

@@ -1,46 +1,45 @@
-import { apple, google } from "../../assets/index.js";
-import styles, { layout } from "../../style.js";
-import Button from "./Button";
-import Lottie from "lottie-react";
-import animationData from "../../assets/Analysis Digital Marketing.json";
+import { apple, google } from '../../assets/index.js';
+import styles, { layout } from '../../style.js';
+import Button from './Button';
+import Lottie from 'lottie-react';
+import animationData from '../../assets/Analysis Digital Marketing.json';
 
 const Billing = () => (
-	<section id="product" className={layout.sectionReverse}>
+	<section id='product' className={layout.sectionReverse}>
 		<div className={layout.sectionImgReverse}>
 			<Lottie
 				animationData={animationData}
 				loop={true}
 				autoplay={true}
-				style={{ width: "100%", height: "100%" }}
+				style={{ width: '100%', height: '100%' }}
 			/>
 
 			{/* gradient start */}
-			<div className="absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient" />
-			<div className="absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient" />
+			<div className='absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient' />
+			<div className='absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient' />
 			{/* gradient end */}
 		</div>
 
 		<div className={layout.sectionInfo}>
 			<h2 className={styles.heading2}>
-				Easily control your <br className="sm:block hidden" /> billing &
+				Easily control your <br className='sm:block hidden' /> billing &
 				invoicing.
 			</h2>
 			<p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-				Elit enim sed massa etiam. Mauris eu adipiscing ultrices
-				ametodio aenean neque. Fusce ipsum orci rhoncus aliporttitor
-				integer platea placerat.
+				Elit enim sed massa etiam. Mauris eu adipiscing ultrices ametodio aenean
+				neque. Fusce ipsum orci rhoncus aliporttitor integer platea placerat.
 			</p>
 
-			<div className="flex flex-row sm:mt-10 mt-6">
+			<div className='flex flex-row sm:mt-10 mt-6'>
 				<img
 					src={apple}
-					alt="google_play"
-					className="w-[128.86px] h-[42.05px] object-contain mr-5 cursor-pointer"
+					alt='google_play'
+					className='w-[128.86px] h-[42.05px] object-contain mr-5 cursor-pointer'
 				/>
 				<img
 					src={google}
-					alt="google_play"
-					className="w-[144.17px] h-[43.08px] object-contain cursor-pointer"
+					alt='google_play'
+					className='w-[144.17px] h-[43.08px] object-contain cursor-pointer'
 				/>
 			</div>
 		</div>

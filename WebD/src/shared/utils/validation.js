@@ -8,9 +8,9 @@
  * @param {string} email - Email to validate
  * @returns {boolean} True if email is valid
  */
-export const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+export const isValidEmail = email => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
 };
 
 /**
@@ -18,14 +18,14 @@ export const isValidEmail = (email) => {
  * @param {string} symbol - Stock symbol to validate
  * @returns {boolean} True if symbol is valid
  */
-export const isValidStockSymbol = (symbol) => {
-  if (!symbol || typeof symbol !== 'string') {
-    return false;
-  }
-  
-  // Stock symbols should be 1-5 characters, alphanumeric
-  const symbolRegex = /^[A-Z]{1,5}$/;
-  return symbolRegex.test(symbol.toUpperCase());
+export const isValidStockSymbol = symbol => {
+	if (!symbol || typeof symbol !== 'string') {
+		return false;
+	}
+
+	// Stock symbols should be 1-5 characters, alphanumeric
+	const symbolRegex = /^[A-Z]{1,5}$/;
+	return symbolRegex.test(symbol.toUpperCase());
 };
 
 /**
@@ -33,21 +33,21 @@ export const isValidStockSymbol = (symbol) => {
  * @param {Object} userData - User data to validate
  * @returns {Object} Validation result with isValid and errors
  */
-export const validateUserData = (userData) => {
-  const errors = [];
+export const validateUserData = userData => {
+	const errors = [];
 
-  if (!userData.name || userData.name.trim().length === 0) {
-    errors.push('Name is required');
-  }
+	if (!userData.name || userData.name.trim().length === 0) {
+		errors.push('Name is required');
+	}
 
-  if (!userData.email || !isValidEmail(userData.email)) {
-    errors.push('Valid email is required');
-  }
+	if (!userData.email || !isValidEmail(userData.email)) {
+		errors.push('Valid email is required');
+	}
 
-  return {
-    isValid: errors.length === 0,
-    errors
-  };
+	return {
+		isValid: errors.length === 0,
+		errors,
+	};
 };
 
 /**
@@ -55,11 +55,13 @@ export const validateUserData = (userData) => {
  * @param {Object} response - API response to validate
  * @returns {boolean} True if response is valid
  */
-export const isValidApiResponse = (response) => {
-  return response && 
-         typeof response === 'object' && 
-         response.status >= 200 && 
-         response.status < 300;
+export const isValidApiResponse = response => {
+	return (
+		response &&
+		typeof response === 'object' &&
+		response.status >= 200 &&
+		response.status < 300
+	);
 };
 
 /**
@@ -67,12 +69,12 @@ export const isValidApiResponse = (response) => {
  * @param {string} input - Input to sanitize
  * @returns {string} Sanitized string
  */
-export const sanitizeString = (input) => {
-  if (typeof input !== 'string') {
-    return '';
-  }
-  
-  return input.trim().replace(/[<>]/g, '');
+export const sanitizeString = input => {
+	if (typeof input !== 'string') {
+		return '';
+	}
+
+	return input.trim().replace(/[<>]/g, '');
 };
 
 /**
@@ -80,8 +82,8 @@ export const sanitizeString = (input) => {
  * @param {string} mode - Theme mode to validate
  * @returns {boolean} True if mode is valid
  */
-export const isValidThemeMode = (mode) => {
-  return ['Light', 'Dark'].includes(mode);
+export const isValidThemeMode = mode => {
+	return ['Light', 'Dark'].includes(mode);
 };
 
 /**
@@ -89,7 +91,7 @@ export const isValidThemeMode = (mode) => {
  * @param {string} color - Color hex to validate
  * @returns {boolean} True if color is valid
  */
-export const isValidHexColor = (color) => {
-  const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-  return hexRegex.test(color);
+export const isValidHexColor = color => {
+	const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+	return hexRegex.test(color);
 };

@@ -1,20 +1,20 @@
-const basePath = "https://finnhub.io/api/v1";
-const token = "cmlujh9r01qqjtfnf2c0cmlujh9r01qqjtfnf2cg"
+const basePath = 'https://finnhub.io/api/v1';
+const token = 'cmlujh9r01qqjtfnf2c0cmlujh9r01qqjtfnf2cg';
 /**
  * Searches best stock matches based on a user's query
  * @param {string} query - The user's query, e.g. 'fb'
  * @returns {Promise<Object[]>} Response array of best stock matches
  */
-export const searchSymbol = async (query) => {
-  const url = `${basePath}/search?q=${query}&token=${token}`;
-  const response = await fetch(url);
+export const searchSymbol = async query => {
+	const url = `${basePath}/search?q=${query}&token=${token}`;
+	const response = await fetch(url);
 
-  if (!response.ok) {
-    const message = `An error has occured: ${response.status}`;
-    throw new Error(message);
-  }
+	if (!response.ok) {
+		const message = `An error has occured: ${response.status}`;
+		throw new Error(message);
+	}
 
-  return await response.json();
+	return await response.json();
 };
 
 /**
@@ -22,16 +22,16 @@ export const searchSymbol = async (query) => {
  * @param {string} stockSymbol - Symbol of the company, e.g. 'FB'
  * @returns {Promise<Object>} Response object
  */
-export const fetchStockDetails = async (stockSymbol) => {
-  const url = `${basePath}/stock/profile2?symbol=${stockSymbol}&token=${token}`;
-  const response = await fetch(url);
+export const fetchStockDetails = async stockSymbol => {
+	const url = `${basePath}/stock/profile2?symbol=${stockSymbol}&token=${token}`;
+	const response = await fetch(url);
 
-  if (!response.ok) {
-    const message = `An error has occured: ${response.status}`;
-    throw new Error(message);
-  }
+	if (!response.ok) {
+		const message = `An error has occured: ${response.status}`;
+		throw new Error(message);
+	}
 
-  return await response.json();
+	return await response.json();
 };
 
 /**
@@ -39,16 +39,16 @@ export const fetchStockDetails = async (stockSymbol) => {
  * @param {string} stockSymbol - Symbol of the company, e.g. 'FB'
  * @returns {Promise<Object>} Response object
  */
-export const fetchQuote = async (stockSymbol) => {
-  const url = `${basePath}/quote?symbol=${stockSymbol}&token=${token}`;
-  const response = await fetch(url);
+export const fetchQuote = async stockSymbol => {
+	const url = `${basePath}/quote?symbol=${stockSymbol}&token=${token}`;
+	const response = await fetch(url);
 
-  if (!response.ok) {
-    const message = `An error has occured: ${response.status}`;
-    throw new Error(message);
-  }
+	if (!response.ok) {
+		const message = `An error has occured: ${response.status}`;
+		throw new Error(message);
+	}
 
-  return await response.json();
+	return await response.json();
 };
 
 /**
@@ -60,18 +60,18 @@ export const fetchQuote = async (stockSymbol) => {
  * @returns {Promise<Object>} Response object
  */
 export const fetchHistoricalData = async (
-  stockSymbol,
-  resolution,
-  from,
-  to
+	stockSymbol,
+	resolution,
+	from,
+	to
 ) => {
-  const url = `${basePath}/stock/candle?symbol=${stockSymbol}&resolution=${resolution}&from=${from}&to=${to}&token=${token}`;
-  const response = await fetch(url);
+	const url = `${basePath}/stock/candle?symbol=${stockSymbol}&resolution=${resolution}&from=${from}&to=${to}&token=${token}`;
+	const response = await fetch(url);
 
-  if (!response.ok) {
-    const message = `An error has occured: ${response.status}`;
-    throw new Error(message);
-  }
+	if (!response.ok) {
+		const message = `An error has occured: ${response.status}`;
+		throw new Error(message);
+	}
 
-  return await response.json();
+	return await response.json();
 };

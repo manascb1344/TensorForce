@@ -1,6 +1,6 @@
-import React from "react";
-import { stats } from "../../shared/constants/appConstants.js";
-import styles from "../../style.js";
+import React from 'react';
+import { stats } from '../../shared/constants/appConstants.js';
+import styles from '../../style.js';
 
 const Stats = () => (
 	<section className={`${styles.flexCenter} flex-row flex-wrap sm:mb mb-6`}>
@@ -19,7 +19,7 @@ const Stats = () => (
     )
     )} */}
 		<div>
-			<p className="font-poppins font-normal xs:text-[20px] text-[15px] xs:leading-[26px] leading-[21px] text-gradient uppercase ml-3 mb-3">
+			<p className='font-poppins font-normal xs:text-[20px] text-[15px] xs:leading-[26px] leading-[21px] text-gradient uppercase ml-3 mb-3'>
 				Trusted by Traders and Investors Worldwide
 			</p>
 		</div>
