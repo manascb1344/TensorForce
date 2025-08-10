@@ -43,6 +43,7 @@ const Hero = () => {
 					autoplay={true}
 					style={{ width: '100%', height: '100%' }}
 				/>
+                <div className='absolute -z-10 w-[40%] h-[40%] right-6 top-10 blue__gradient rounded-full' />
 			</div>
 
 			<div className={`ss:hidden ${styles.flexCenter}`}>

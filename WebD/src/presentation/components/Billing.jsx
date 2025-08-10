@@ -6,18 +6,16 @@ import animationData from '../../assets/Analysis Digital Marketing.json';
 
 const Billing = () => (
 	<section id='product' className={layout.sectionReverse}>
-		<div className={layout.sectionImgReverse}>
+        <div className={layout.sectionImgReverse}>
 			<Lottie
 				animationData={animationData}
 				loop={true}
 				autoplay={true}
 				style={{ width: '100%', height: '100%' }}
 			/>
-
-			{/* gradient start */}
-			<div className='absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient' />
-			<div className='absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient' />
-			{/* gradient end */}
+            {/* subtle glow start */}
+            <div className='absolute z-[0] -left-1/3 top-10 w-[40%] h-[40%] rounded-full white__gradient' />
+            {/* subtle glow end */}
 		</div>
 
 		<div className={layout.sectionInfo}>
