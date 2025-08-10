@@ -29,9 +29,9 @@ const Navbar = () => {
 			return null;
 		}
 
-		if (isAuthenticated) {
-			return (
-				<div className='relative ml-auto'>
+        if (isAuthenticated) {
+            return (
+                <div className='relative ml-auto'>
 					<img
 						id='avatarButton'
 						type='button'
@@ -45,22 +45,22 @@ const Navbar = () => {
 					/>
 
 					{toggle && (
-						<div
-							id='userDropdown'
-							className='z-10  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-900 dark:divide-gray-600 absolute top-16 right-0 mt-2 p-2'
-							onClick={e => e.stopPropagation()}
-						>
+                        <div
+                            id='userDropdown'
+                            className='z-20 glass-card elevated divide-y divide-white/10 rounded-xl w-56 absolute top-16 right-0 mt-2 p-2'
+                            onClick={e => e.stopPropagation()}
+                        >
 							<div className='px-4 py-3 text-sm text-gray-900 dark:text-white'>
 								<div className='font-medium truncate'>{user.email}</div>
 							</div>
-							<ul
-								className='py-2 text-sm text-gray-700 dark:text-gray-200'
-								aria-labelledby='avatarButton'
-							>
+                            <ul
+                                className='py-2 text-sm text-white/80'
+                                aria-labelledby='avatarButton'
+                            >
 								<li>
 									<a
 										href='#'
-										className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+                                        className='block px-4 py-2 rounded-lg hover:bg-white/10'
 										onClick={handleDashboardClick}
 									>
 										Dashboard
@@ -69,7 +69,7 @@ const Navbar = () => {
 								<li>
 									<a
 										href='#'
-										className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+                                        className='block px-4 py-2 rounded-lg hover:bg-white/10'
 									>
 										Settings
 									</a>
@@ -77,7 +77,7 @@ const Navbar = () => {
 								<li>
 									<a
 										href='#'
-										className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+                                        className='block px-4 py-2 rounded-lg hover:bg-white/10'
 									>
 										Earnings
 									</a>
@@ -86,7 +86,7 @@ const Navbar = () => {
 							<div className='py-1'>
 								<a
 									href='#'
-									className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
+                                    className='block px-4 py-2 text-sm text-white/90 rounded-lg hover:bg-white/10'
 									onClick={e => {
 										e.preventDefault();
 										handleLogout();
@@ -100,50 +100,38 @@ const Navbar = () => {
 				</div>
 			);
 		} else {
-			return <Button onClick={handleLogin} label='Login' styles='ml-auto' />;
+            return <Button onClick={handleLogin} label='Login' className='ml-auto' variant='ghost' />;
 		}
 	};
 
 	return (
-		<nav className='w-full flex py-6 items-center navbar'>
+        <nav className='w-full flex py-4 items-center navbar sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/10'>
 			<img
 				src={logo}
 				alt='TensorForce'
-				className='w-[124px] h-[32px]'
+                className='w-[124px] h-[32px] cursor-pointer'
 				onClick={() => navigate('/')}
 			/>
 
 			<ul className='list-none sm:flex hidden items-center flex-1 ml-6'>
-				<li
-					className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-				>
+                <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 mr-8 hover:text-white'>
 					<a href='/#home'>Home</a>
 				</li>
 
-				<li
-					className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-				>
+                <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 mr-8 hover:text-white'>
 					<a href='/#features'>Features</a>
 				</li>
-				<li
-					className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-				>
+                <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 mr-8 hover:text-white'>
 					<a href='/#product'>Product</a>
 				</li>
-				<li
-					className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-				>
+                <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 mr-8 hover:text-white'>
 					<a href='/#clients'>Clients</a>
 				</li>
-				<li
-					className={`font-poppins font-normal cursor-pointer text-[16px] mr-10 text-white hover:text-blue-500`}
-				>
+                <li className='font-poppins font-normal cursor-pointer text-[16px] mr-8 text-white/80 hover:text-white'>
 					<a href='/contact'>Contact Us</a>
 				</li>
 				{isAuthenticated && (
-					<li
-						className={`font-poppins font-normal cursor-pointer text-[16px] text-white hover:text-blue-500`}
-					>
+                    <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 hover:text-white'>
 						<a href='/dashboardv2'>Dashboard</a>
 					</li>
 				)}
@@ -151,49 +139,37 @@ const Navbar = () => {
 
 			{renderProfileButton()}
 
-			<div className='sm:hidden flex flex-1 justify-end items-center'>
+            <div className='sm:hidden flex flex-1 justify-end items-center'>
 				<img
 					src={toggle ? close : menu}
 					alt='menu'
-					className='w-[28px] h-[28px] object-contain'
+                    className='w-[28px] h-[28px] object-contain cursor-pointer'
 					onClick={() => setToggle(!toggle)}
 				/>
 
 				<div
 					className={`${
 						toggle ? 'flex' : 'hidden'
-					} p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+                    } p-6 glass-card elevated absolute top-16 right-2 mx-4 my-2 min-w-[180px] rounded-xl sidebar`}
 				>
 					<ul className='list-none flex flex-col justify-end items-center flex-1'>
-						<li
-							className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-						>
+                        <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 mb-4 hover:text-white'>
 							<a href='/#home'>Home</a>
 						</li>
-						<li
-							className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-						>
+                        <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 mb-4 hover:text-white'>
 							<a href='/#features'>Features</a>
 						</li>
-						<li
-							className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-						>
+                        <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 mb-4 hover:text-white'>
 							<a href='/#product'>Product</a>
 						</li>
-						<li
-							className={`font-poppins font-normal cursor-pointer text-[16px] text-white mr-10 hover:text-blue-500`}
-						>
+                        <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 mb-4 hover:text-white'>
 							<a href='/#clients'>Clients</a>
 						</li>
-						<li
-							className={`font-poppins font-normal cursor-pointer text-[16px] text-white hover:text-blue-500`}
-						>
+                        <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 mb-2 hover:text-white'>
 							<a href='/contact'>Contact Us</a>
 						</li>
 						{isAuthenticated && (
-							<li
-								className={`font-poppins font-normal cursor-pointer text-[16px] text-white hover:text-blue-500`}
-							>
+                            <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 hover:text-white'>
 								<a href='/dashboardv2'>Dashboard</a>
 							</li>
 						)}
