@@ -4,10 +4,11 @@ import { FiShoppingCart } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useAuth0 } from "@auth0/auth0-react";
-import svg from "../../assets/avatar-svgrepo-com.svg";
+import { useAuth } from "../../../../hooks/useAuth.js";
+import { useAppContext } from "../../../../providers/AppContextProvider.jsx";
+import { useTheme } from "../../../../hooks/useTheme.js";
+import svg from "../../../../assets/avatar-svgrepo-com.svg";
 import { Cart, UserProfile } from ".";
-import { useStateContext } from "../contexts/ContextProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
 	const handleClick = () => {
@@ -41,10 +42,10 @@ const Navbar = () => {
 		setIsClicked,
 		screenSize,
 		setScreenSize,
-		currentColor,
-	} = useStateContext();
+	} = useAppContext();
 
-	const { user, isLoading } = useAuth0();
+	const { user, isLoading } = useAuth();
+	const { theme } = useTheme();
 
 	const handleResize = useCallback(() => {
 		setScreenSize(window.innerWidth);
@@ -76,22 +77,10 @@ const Navbar = () => {
 				customFunc={() =>
 					setActiveMenu((prevActiveMenu) => !prevActiveMenu)
 				}
-				color={currentColor}
+				color={theme.color}
 				icon={<AiOutlineMenu />}
 			/>
 			<div className="flex">
-{/* 				<NavButton
-					title="Cart"
-					customFunc={() =>
-						setIsClicked((prevState) => ({
-							...prevState,
-							cart: !prevState.cart,
-						}))
-					}
-					color={currentColor}
-					icon={<FiShoppingCart />}
-				/> */}
-
 				<Tippy content="Profile" placement="bottom">
 					<div
 						className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
@@ -104,20 +93,19 @@ const Navbar = () => {
 					>
 						<img
 							className="rounded-full w-8 h-8"
-							src={user.picture || svg}
+							src={user?.picture || svg}
 							referrerPolicy="no-referrer"
 							alt="User Avatar"
 						/>
 						<p>
 							<span className="text-gray-400 text-14"> Hi,</span>
 							<span className="text-gray-400 font-bold ml-1 text-14">
-								{user.name}
+								{user?.name || 'User'}
 							</span>
 						</p>
 						<MdKeyboardArrowDown className="text-gray-400 text-14" />
 					</div>
 				</Tippy>
-				{/* {isClicked.cart && <Cart />} */}
 				{isClicked.userProfile && <UserProfile />}
 			</div>
 		</div>

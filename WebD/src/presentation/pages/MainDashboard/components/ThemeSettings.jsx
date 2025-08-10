@@ -5,11 +5,10 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
 import { themeColors } from "../data/dummy";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useTheme } from "../../../../hooks/useTheme.js";
 
 const ThemeSettings = () => {
-  const { setColor, setMode, currentMode, currentColor, setThemeSettings } =
-    useStateContext();
+  const { theme, setMode, setColor, toggleSettings } = useTheme();
 
   return (
     <div className="bg-half-transparent w-screen fixed nav-item top-0 right-0">
@@ -18,7 +17,7 @@ const ThemeSettings = () => {
           <p className="font-semibold text-lg">Settings</p>
           <button
             type="button"
-            onClick={() => setThemeSettings(false)}
+            onClick={toggleSettings}
             style={{ color: "rgb(153, 171, 180)", borderRadius: "50%" }}
             className="text-2xl p-3 hover:drop-shadow-xl hover:bg-light-gray"
           >
@@ -35,8 +34,8 @@ const ThemeSettings = () => {
               name="theme"
               value="Light"
               className="cursor-pointer"
-              onChange={setMode}
-              checked={currentMode === "Light"}
+              onChange={(e) => setMode(e.target.value)}
+              checked={theme.mode === "Light"}
             />
             <label htmlFor="light" className="ml-2 text-md cursor-pointer">
               Light
@@ -48,9 +47,9 @@ const ThemeSettings = () => {
               id="dark"
               name="theme"
               value="Dark"
-              onChange={setMode}
+              onChange={(e) => setMode(e.target.value)}
               className="cursor-pointer"
-              checked={currentMode === "Dark"}
+              checked={theme.mode === "Dark"}
             />
             <label htmlFor="dark" className="ml-2 text-md cursor-pointer">
               Dark
@@ -78,7 +77,7 @@ const ThemeSettings = () => {
                   >
                     <BsCheck
                       className={`ml-2 text-2xl text-white ${
-                        item.color === currentColor ? "block" : "hidden"
+                        item.color === theme.color ? "block" : "hidden"
                       }`}
                     />
                   </button>
