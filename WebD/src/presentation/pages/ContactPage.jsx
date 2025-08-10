@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import styles from "./style";
+import styles from "../../style.js";
 import emailjs from "@emailjs/browser";
-import { Navbar, Button, Footer } from "./components";
+import { Navbar, Button, Footer } from "../components/index.js";
 
 const Result = () => {
 	return <p>Your message has been successfully sent.</p>;

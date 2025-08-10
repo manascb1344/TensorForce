@@ -47,6 +47,9 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.0.10
         version: 1.0.12(react@18.3.1)
+      ag-grid-community:
+        specifier: ^34.1.1
+        version: 34.1.1
       ag-grid-react:
         specifier: ^31.1.1
         version: 31.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -116,6 +119,9 @@ importers:
       styled-components:
         specifier: ^6.1.8
         version: 6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tippy.js:
+        specifier: ^6.3.7
+        version: 6.3.7
       typescript:
         specifier: ^5.4.2
         version: 5.5.4
@@ -1147,8 +1153,14 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  ag-charts-types@12.1.1:
+    resolution: {integrity: sha512-VbAOfp1E7+Z/TBufJOIjUYdx70kQRDg49WoluiVKVSB0r0el/uvxARp9xjzx4ByBq9+Xq/V23tJVsRj1MS2A/g==}
+
   ag-grid-community@31.3.4:
     resolution: {integrity: sha512-jOxQO86C6eLnk1GdP24HB6aqaouFzMWizgfUwNY5MnetiWzz9ZaAmOGSnW/XBvdjXvC5Fpk3gSbvVKKQ7h9kBw==}
+
+  ag-grid-community@34.1.1:
+    resolution: {integrity: sha512-ODVvGoMTkyGvMT8b5lzvum5r93bG6CKdJdNrk6u/aYS7oqZ5rUEXJJHC8n8Zq+o76KhFiXMBQrU39xuhz8i+Tg==}
 
   ag-grid-react@31.3.4:
     resolution: {integrity: sha512-WmPASHRFGSTxCMRStWG5bRtln0Ugsdqbb3+Y8sEyGHeLw4hXqfpqie3lT9kqCOl7wPWUjCpwmFdXzRnWPmyyeg==}
@@ -3516,7 +3528,13 @@ snapshots:
 
   acorn@8.12.1: {}
 
+  ag-charts-types@12.1.1: {}
+
   ag-grid-community@31.3.4: {}
+
+  ag-grid-community@34.1.1:
+    dependencies:
+      ag-charts-types: 12.1.1
 
   ag-grid-react@31.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

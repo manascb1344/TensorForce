@@ -1,8 +1,8 @@
-import { apple, google } from "../assets";
-import styles, { layout } from "../style";
+import { apple, google } from "../../assets/index.js";
+import styles, { layout } from "../../style.js";
 import Button from "./Button";
 import Lottie from "react-lottie";
-import animationData from "../assets/Analysis Digital Marketing.json";
+import animationData from "../../assets/Analysis Digital Marketing.json";
 
 const Billing = () => {
   const defaultOptions = {

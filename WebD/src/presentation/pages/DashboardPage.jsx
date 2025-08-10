@@ -8,13 +8,13 @@ import {
   Footer,
   Sidebar,
   ThemeSettings,
-} from './MainDashboard/components/index.js';
+} from './MainDashboard/components/index.jsx';
 import {
   Dashboard,
   Orders,
   News,
   Contribute,
-} from './MainDashboard/pages/index.js';
+} from './MainDashboard/pages/index.jsx';
 import Profile from './MainDashboard/pages/Profile.jsx';
 import Positions from './MainDashboard/pages/Positions.jsx';
 import Heatmap from './MainDashboard/pages/Heatmap.jsx';

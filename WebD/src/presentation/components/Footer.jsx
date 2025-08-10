@@ -1,6 +1,6 @@
-import styles from "../style";
-import { logo } from "../assets";
-import { footerLinks, socialMedia } from "../constants";
+import styles from "../../style.js";
+import { logo } from "../../assets/index.js";
+import { footerLinks, socialMedia } from "../../shared/constants/appConstants.js";
 
 const Footer = () => (
 	<section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>

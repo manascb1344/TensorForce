@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "../style";
-import { discount } from "../assets";
+import styles from "../../style.js";
+import { discount } from "../../assets/index.js";
 import GetStarted from "./GetStarted";
 import Button from "./Button";
 import Lottie from "react-lottie";
-import animationData from "../assets/zljP1VcNa6.json";
+import animationData from "../../assets/zljP1VcNa6.json";
 
 const Hero = () => {
   const defaultOptions = {

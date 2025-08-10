@@ -1,7 +1,7 @@
-import styles, { layout } from "../style";
+import styles, { layout } from "../../style.js";
 import Button from "./Button";
 import Lottie from "react-lottie";
-import animationData from "../assets/Cb7PYb6sBk.json";
+import animationData from "../../assets/Cb7PYb6sBk.json";
 
 const CardDeal = () => {
   const defaultOptions = {

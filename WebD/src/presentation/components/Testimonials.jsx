@@ -1,5 +1,5 @@
-import { feedback } from "../constants";
-import styles from "../style";
+import { feedback } from "../../shared/constants/appConstants.js";
+import styles from "../../style.js";
 import FeedbackCard from "./FeedbackCard";
 
 const Testimonials = () => (

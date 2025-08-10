@@ -1,6 +1,6 @@
-import styles from "../style";
+import styles from "../../style.js";
 import Button from "./Button";
-import { robot } from "../assets";
+import { robot } from "../../assets/index.js";
 
 const Research = () => (
 	<section

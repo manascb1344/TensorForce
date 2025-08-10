@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { close, logo, menu } from "../assets";
+import { close, logo, menu } from "../../assets/index.js";
 import Button from "./Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";

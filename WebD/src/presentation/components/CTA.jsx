@@ -1,7 +1,7 @@
-import styles from "../style";
+import styles from "../../style.js";
 import Button from "./Button";
 import Lottie from "react-lottie";
-import animationData from "../assets/business-team.json";
+import animationData from "../../assets/business-team.json";
 
 const CTA = () => {
   const defaultOptions = {

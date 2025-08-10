@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../style";
+import styles from "../../style.js";
 import Button from "./Button";
 
 const Query = () => {
