@@ -1,10 +1,11 @@
-import styles from '../../style.js';
+import styles, { layout } from '../../style.js';
 import Lottie from 'lottie-react';
 import animationData from '../../assets/Cb7PYb6sBk.json';
+import Button from './Button';
 
 const CardDeal = () => (
-	<section className={styles.section}>
-		<div className={styles.sectionInfo}>
+    <section className={layout.section}>
+        <div className={layout.sectionInfo}>
 			<h2 className={styles.heading2}>
 				Find a better card deal <br className='sm:block hidden' /> in few easy
 				steps.
@@ -13,16 +14,12 @@ const CardDeal = () => (
 				Arcu tortor, purus in mattis at sed integer faucibus. Aliquet quis
 				aliquet eget mauris tortor.ç Aliquet ultrices ac, ametau.
 			</p>
-
-			<button
-				type='button'
-				className={`py-4 px-6 font-poppins font-medium text-[18px] text-primary bg-blue-gradient rounded-[10px] outline-none ${styles}`}
-			>
-				Get Started
-			</button>
+            <div className='mt-8'>
+                <Button label='Get Started' variant='primary' size='md' />
+            </div>
 		</div>
 
-		<div className={styles.sectionImg}>
+        <div className={layout.sectionImg}>
 			<Lottie
 				animationData={animationData}
 				loop={true}

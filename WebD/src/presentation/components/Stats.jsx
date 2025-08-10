@@ -3,7 +3,7 @@ import { stats } from '../../shared/constants/appConstants.js';
 import styles from '../../style.js';
 
 const Stats = () => (
-	<section className={`${styles.flexCenter} flex-row flex-wrap sm:mb mb-6`}>
+    <section className={`${styles.flexCenter} flex-row flex-wrap sm:mb-16 mb-10`}>
 		{/* {stats.map((stat) => (
       <div
         key={stat.id}
@@ -18,11 +18,11 @@ const Stats = () => (
       </div>
     )
     )} */}
-		<div>
-			<p className='font-poppins font-normal xs:text-[20px] text-[15px] xs:leading-[26px] leading-[21px] text-gradient uppercase ml-3 mb-3'>
-				Trusted by Traders and Investors Worldwide
-			</p>
-		</div>
+        <div className='glass-card elevated rounded-2xl px-6 py-4'>
+            <p className='font-poppins font-normal xs:text-[18px] text-[14px] xs:leading-[24px] leading-[20px] text-white/80 uppercase tracking-wide'>
+                Trusted by Traders and Investors Worldwide
+            </p>
+        </div>
 	</section>
 );
 

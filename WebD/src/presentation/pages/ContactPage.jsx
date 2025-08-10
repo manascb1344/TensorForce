@@ -54,50 +54,47 @@ const Contact = () => {
 
 				<div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
 					<div className={styles.boxWidth}>
-						<section
-							className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col bg-black-gradient-2 rounded-[20px] box-shadow`}
-						>
-							<div className='flex-1 flex flex-col'>
-								<div className='mt-8 mr-20 flex flex-col'>
-									<input
-										name='fullName'
-										type='text'
-										placeholder='Name'
-										required
-										className={`w-96 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
-									/>
-									<input
-										name='email'
-										type='email'
-										placeholder='Email'
-										required
-										className={`w-96 h-10 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
-									/>
-									<textarea
-										name='message'
-										placeholder='Message'
-										required
-										className={`w-96 h-20 py-3 px-4 bg-white font-poppins font-medium text-[18px] text-black outline-none rounded-[10px] mb-4`}
-									/>
-									<div className='mt-10'>
-										<Button
-											label='Submit'
-											className='hover:bg-gray-700 hover:text-white'
-										/>
-									</div>
-								</div>
-							</div>
-							<div>
-								<iframe
-									src='https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Veermata%20Jijabai%20Technological%20Institute%20VJT+(Veermata%20Jijabai%20Technological%20Institute%20VJTI)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'
-									width='600'
-									height='450'
-									style={{ border: 0 }}
-									allowFullScreen=''
-									loading='lazy'
-								></iframe>
-							</div>
-						</section>
+                        <section className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col glass-card elevated rounded-2xl`}>
+                            <div className='flex-1 flex flex-col w-full'>
+                                <div className='mt-6 sm:mr-12 flex flex-col w-full'>
+                                    <input
+                                        name='fullName'
+                                        type='text'
+                                        placeholder='Name'
+                                        required
+                                        className='w-full max-w-md h-12 py-3 px-4 bg-white/5 border border-white/10 text-white placeholder-white/60 font-poppins text-[16px] outline-none rounded-xl mb-4'
+                                    />
+                                    <input
+                                        name='email'
+                                        type='email'
+                                        placeholder='Email'
+                                        required
+                                        className='w-full max-w-md h-12 py-3 px-4 bg-white/5 border border-white/10 text-white placeholder-white/60 font-poppins text-[16px] outline-none rounded-xl mb-4'
+                                    />
+                                    <textarea
+                                        name='message'
+                                        placeholder='Message'
+                                        required
+                                        className='w-full max-w-md h-28 py-3 px-4 bg-white/5 border border-white/10 text-white placeholder-white/60 font-poppins text-[16px] outline-none rounded-xl mb-4'
+                                    />
+                                    <div className='mt-6'>
+                                        <Button label='Submit' variant='primary' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='w-full flex-1 mt-8 sm:mt-0'>
+                                <div className='rounded-xl overflow-hidden border border-white/10'>
+                                    <iframe
+                                        src='https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Veermata%20Jijabai%20Technological%20Institute%20VJT+(Veermata%20Jijabai%20Technological%20Institute%20VJTI)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'
+                                        width='100%'
+                                        height='450'
+                                        style={{ border: 0 }}
+                                        allowFullScreen=''
+                                        loading='lazy'
+                                    ></iframe>
+                                </div>
+                            </div>
+                        </section>
 						<Footer />
 					</div>
 				</div>
