@@ -68,8 +68,8 @@ const Navbar = () => {
 		return <div>Loading</div>;
 	}
 
-	return (
-		<div className='flex justify-between p-2 md:mx-6 relative'>
+    return (
+        <div className='flex justify-between p-2 md:mx-6 relative sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-black/20 bg-black/10 rounded-xl'>
 			<NavButton
 				title='Menu'
 				customFunc={() => setActiveMenu(prevActiveMenu => !prevActiveMenu)}

@@ -193,12 +193,12 @@ const Dashboard = () => {
 			</div>
 
 			<div className='flex gap-10 flex-wrap justify-center'>
-				<div className='bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  '>
+                <div className='bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780 glass-card elevated'>
 					<AreaChart />
 				</div>
 				<div>
 					<div
-						className=' rounded-2xl md:w-400  mt-3 mb-3'
+                        className=' rounded-2xl md:w-400 mt-3 mb-3 glass-card elevated'
 						style={{ backgroundColor: currentColor }}
 					>
 						<QuickTrade />

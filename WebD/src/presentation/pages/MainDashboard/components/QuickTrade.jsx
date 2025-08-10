@@ -52,7 +52,7 @@ const QuickTrade = () => {
 	};
 
 	return (
-		<div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
+        <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm'>
 			<h3 className='text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200'>
 				Quick Trade
 			</h3>
@@ -107,14 +107,14 @@ const QuickTrade = () => {
 					</p>
 				</div>
 
-				<button
-					onClick={handleTrade}
-					className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
-						tradeType === 'buy'
-							? 'bg-green-500 hover:bg-green-600 text-white'
-							: 'bg-red-500 hover:bg-red-600 text-white'
-					}`}
-				>
+                <button
+                    onClick={handleTrade}
+                    className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+                        tradeType === 'buy'
+                            ? 'bg-green-500 hover:bg-green-600 text-white'
+                            : 'bg-red-500 hover:bg-red-600 text-white'
+                    }`}
+                >
 					{tradeType === 'buy' ? 'Buy' : 'Sell'} Shares
 				</button>
 			</div>
