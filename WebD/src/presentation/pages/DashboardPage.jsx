@@ -23,6 +23,7 @@ import SentimentPage from './MainDashboard/pages/SentimentPage.jsx';
 import CompanyFinancials from './MainDashboard/CompanyFinancials/CompanyFinancials.jsx';
 import './MainDashboard/material.css';
 import './MainDashboard/App.css';
+import { ContextProvider as MDContextProvider } from './MainDashboard/contexts/ContextProvider.jsx';
 
 /**
  * Dashboard page component
@@ -32,8 +33,9 @@ const DashboardPage = () => {
 	const { activeMenu } = useAppContext();
 	const { theme, isDarkMode } = useTheme();
 
-	return (
-		<div className={isDarkMode ? 'dark' : ''}>
+    return (
+        <MDContextProvider>
+        <div className={isDarkMode ? 'dark' : ''}>
 			<div className='flex relative dark:bg-main-dark-bg'>
 				{activeMenu ? (
 					<div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
@@ -76,7 +78,8 @@ const DashboardPage = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+        </div>
+        </MDContextProvider>
 	);
 };
 
