@@ -5,7 +5,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
 import { themeColors } from "../data/dummy";
-import { useTheme } from "../../../../hooks/useTheme.js";
+import { useTheme } from "../../../hooks/useTheme";
 
 const ThemeSettings = () => {
   const { theme, setMode, setColor, toggleSettings } = useTheme();

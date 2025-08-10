@@ -28,7 +28,12 @@ export const useTheme = () => {
       }
     };
 
-    loadTheme();
+    // Only run in browser environment
+    if (typeof window !== 'undefined') {
+      loadTheme();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   const updateTheme = (newThemeData) => {
@@ -39,7 +44,9 @@ export const useTheme = () => {
       });
       
       setTheme(updatedTheme);
-      storageService.saveTheme(updatedTheme);
+      if (typeof window !== 'undefined') {
+        storageService.saveTheme(updatedTheme);
+      }
     } catch (error) {
       console.error('Failed to update theme:', error);
     }
@@ -78,7 +85,9 @@ export const useTheme = () => {
     });
     
     setTheme(defaultTheme);
-    storageService.saveTheme(defaultTheme);
+    if (typeof window !== 'undefined') {
+      storageService.saveTheme(defaultTheme);
+    }
   };
 
   return {

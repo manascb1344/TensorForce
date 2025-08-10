@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { useStock } from '../hooks/useStock.js';
+import { useStock } from '../hooks/useStock';
 
 const StockContext = createContext();
 

@@ -26,6 +26,10 @@ export class Theme {
    * Save theme to localStorage
    */
   saveToStorage() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     localStorage.setItem('themeMode', this.mode);
     localStorage.setItem('colorMode', this.color);
   }

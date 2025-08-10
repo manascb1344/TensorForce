@@ -4,9 +4,9 @@ import { FiShoppingCart } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useAuth } from "../../../../hooks/useAuth.js";
-import { useAppContext } from "../../../../providers/AppContextProvider.jsx";
-import { useTheme } from "../../../../hooks/useTheme.js";
+import { useAuth } from "../../../hooks/useAuth";
+import { useAppContext } from "../../../providers/AppContextProvider";
+import { useTheme } from "../../../hooks/useTheme";
 import svg from "../../../../assets/avatar-svgrepo-com.svg";
 import { Cart, UserProfile } from ".";
 

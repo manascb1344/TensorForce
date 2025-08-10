@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useStockContext } from "../../../../../providers/StockContextProvider.jsx";
+import { useStockContext } from "../../../../providers/StockContextProvider";
 import Overview from "./Overview";
 import Details from "./Details";
 import Chart from "./Chart";

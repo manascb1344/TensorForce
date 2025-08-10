@@ -1,24 +1,24 @@
 import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { userProfileData } from "../data/dummy";
-import { useStateContext } from "../contexts/ContextProvider";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAppContext } from "../../../providers/AppContextProvider";
+import { useAuth } from "../../../hooks/useAuth";
+import { useTheme } from "../../../hooks/useTheme";
 import { useNavigate } from "react-router-dom";
-import svg from "../../assets/avatar-svgrepo-com.svg";
+import svg from "../../../../assets/avatar-svgrepo-com.svg";
 
 const UserProfile = () => {
 	const navigate = useNavigate();
 	const {
 		isClicked,
-		currentColor,
 		setIsClicked,
-		initialState,
 		handleClick,
-	} = useStateContext();
-	const { logout, user } = useAuth0();
+	} = useAppContext();
+	const { user, logout } = useAuth();
+	const { theme } = useTheme();
 
 	const handleLogout = () => {
-		logout({ returnTo: window.location.origin });
+		logout();
 	};
 
 	const renderProfileItems = () => {
@@ -73,19 +73,19 @@ const UserProfile = () => {
 			<div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
 				<img
 					className="rounded-full h-20 w-20"
-					src={user.picture || svg}
+					src={user?.picture || svg}
 					referrerPolicy="no-referrer"
 					alt="user-profile"
 				/>
 				<div style={{ maxWidth: "100%", overflow: "hidden" }}>
 					<p className="font-semibold text-xl dark:text-gray-200">
-						{user.name}
+						{user?.name || 'User'}
 					</p>
 					<p className="text-gray-500 text-sm dark:text-gray-400">
 						Administrator
 					</p>
 					<p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
-						{user.email}
+						{user?.email || 'user@example.com'}
 					</p>
 				</div>
 			</div>
@@ -95,7 +95,7 @@ const UserProfile = () => {
 					type="button"
 					onClick={handleLogout}
 					style={{
-						backgroundColor: currentColor,
+						backgroundColor: theme.color,
 						color: "white",
 						borderRadius: "10px",
 						width: "full",
