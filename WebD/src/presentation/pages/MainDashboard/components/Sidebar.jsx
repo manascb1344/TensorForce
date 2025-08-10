@@ -26,8 +26,8 @@ const Sidebar = () => {
 			{activeMenu && (
 				<>
 					<div className='flex justify-between items-center'>
-						<Link
-							to='/dashboardv2'
+                        <Link
+                            to='/dashboard'
 							onClick={handleCloseSidebar}
 							className='items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900'
 						>
@@ -54,8 +54,8 @@ const Sidebar = () => {
 							<div key={item.title}>
 								<p className='text-gray-400 m-3 mt-4 uppercase'>{item.title}</p>
 								{item.links.map(link => (
-									<NavLink
-										to={`/dashboardv2/${link.name}`}
+                                <NavLink
+                                    to={`/dashboard/${link.name}`}
 										key={link.name}
 										style={({ isActive }) => ({
 											backgroundColor: isActive ? theme.color : '',

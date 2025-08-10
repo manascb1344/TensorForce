@@ -665,7 +665,7 @@ export const userProfileData = [
 	{
 		icon: <BsCurrencyDollar />,
 		title: 'My Profile',
-		nav: '/dashboardv2/Profile',
+        nav: '/dashboard/Profile',
 		desc: 'Account Settings',
 		iconColor: '#03C9D7',
 		iconBg: '#E5FAFB',

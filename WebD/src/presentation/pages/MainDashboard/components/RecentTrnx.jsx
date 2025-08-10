@@ -40,9 +40,9 @@ const RecentTrnx = () => {
 		fetchData();
 	}, []);
 
-	const handleAllOrdersClick = () => {
-		navigate('/dashboardv2/orders');
-	};
+    const handleAllOrdersClick = () => {
+        navigate('/dashboard/orders');
+    };
 
 	return (
 		<div className='bg-white text-gray-900 dark:bg-secondary-dark-bg dark:text-gray-200 p-6 rounded-2xl'>

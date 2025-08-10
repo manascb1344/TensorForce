@@ -13,7 +13,7 @@ const Navbar = () => {
 	const navigate = useNavigate();
 
     const handleDashboardClick = () => {
-        navigate('/dashboardv2');
+        navigate('/dashboard');
     };
 
 	const handleLogin = () => {
@@ -132,7 +132,7 @@ const Navbar = () => {
 				</li>
 				{isAuthenticated && (
                     <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/80 hover:text-white'>
-						<a href='/dashboardv2'>Dashboard</a>
+                        <a href='/dashboard'>Dashboard</a>
 					</li>
 				)}
 			</ul>
@@ -170,7 +170,7 @@ const Navbar = () => {
 						</li>
 						{isAuthenticated && (
                             <li className='font-poppins font-normal cursor-pointer text-[16px] text-white/90 hover:text-white'>
-								<a href='/dashboardv2'>Dashboard</a>
+                                <a href='/dashboard'>Dashboard</a>
 							</li>
 						)}
 					</ul>
