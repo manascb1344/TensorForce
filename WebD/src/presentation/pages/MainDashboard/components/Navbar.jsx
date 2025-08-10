@@ -3,7 +3,6 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { FiShoppingCart } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import { useAuth } from "../../../hooks/useAuth";
 import { useAppContext } from "../../../providers/AppContextProvider";
 import { useTheme } from "../../../hooks/useTheme";

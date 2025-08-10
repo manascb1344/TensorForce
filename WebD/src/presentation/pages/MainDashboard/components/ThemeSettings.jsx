@@ -2,7 +2,6 @@ import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 
 import { themeColors } from "../data/dummy";
 import { useTheme } from "../../../hooks/useTheme";

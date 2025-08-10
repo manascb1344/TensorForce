@@ -1,192 +1,216 @@
-import React, { useState, useEffect, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import { FaSearch } from "react-icons/fa";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../../hooks/useAuth";
+
+// Lightweight Table Component
+const DataTable = ({ data, columns, className = "" }) => {
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const filteredData = data.filter(row =>
+    Object.values(row).some(value =>
+      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+    
+    if (typeof aValue === 'string') {
+      return sortDirection === 'asc' 
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+    
+    return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+  });
+
+  return (
+    <div className={`${className}`}>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              {columns.map((column) => (
+                <th
+                  key={column.key}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                  onClick={() => handleSort(column.key)}
+                >
+                  <div className="flex items-center">
+                    {column.label}
+                    {sortField === column.key && (
+                      <span className="ml-1">
+                        {sortDirection === 'asc' ? '↑' : '↓'}
+                      </span>
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            {sortedData.map((row, index) => (
+              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                {columns.map((column) => (
+                  <td
+                    key={column.key}
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200"
+                  >
+                    {column.render ? column.render(row[column.key], row) : row[column.key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      
+      {sortedData.length === 0 && (
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          No data found
+        </div>
+      )}
+    </div>
+  );
+};
 
 const SentimentPage = () => {
-	const [rowData, setRowData] = useState([]);
-	const [searchQuery, setSearchQuery] = useState("");
-	const gridApi = useRef(null);
+  const { user } = useAuth();
+  const [sentimentData, setSentimentData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		fetchSentiments();
-	}, []);
+  useEffect(() => {
+    // Simulate loading sentiment data
+    const loadSentimentData = async () => {
+      try {
+        setLoading(true);
+        // Mock data - replace with actual API call
+        const mockData = [
+          {
+            symbol: 'AAPL',
+            sentiment: 'Bullish',
+            confidence: 85,
+            price: 150.25,
+            change: 2.5,
+            volume: 45000000
+          },
+          {
+            symbol: 'GOOGL',
+            sentiment: 'Neutral',
+            confidence: 65,
+            price: 2750.80,
+            change: -1.2,
+            volume: 28000000
+          },
+          {
+            symbol: 'MSFT',
+            sentiment: 'Bullish',
+            confidence: 78,
+            price: 320.45,
+            change: 3.1,
+            volume: 35000000
+          },
+          {
+            symbol: 'TSLA',
+            sentiment: 'Bearish',
+            confidence: 72,
+            price: 850.30,
+            change: -5.8,
+            volume: 52000000
+          },
+          {
+            symbol: 'AMZN',
+            sentiment: 'Bullish',
+            confidence: 81,
+            price: 145.60,
+            change: 1.9,
+            volume: 38000000
+          }
+        ];
+        
+        setSentimentData(mockData);
+      } catch (error) {
+        console.error('Error loading sentiment data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-	const stockSymbols = [
-		"AAPL",
-		"TSLA",
-		"GOOGL",
-		"MSFT",
-		"AMZN",
-		"GME",
-		"META",
-		"NFLX",
-		"NVDA",
-		"NKE",
-	];
+    loadSentimentData();
+  }, []);
 
-	const fetchSentiments = async () => {
-		try {
-			const promises = stockSymbols.map(async (symbol) => {
-				const response = await fetch(
-					`https://financialmodelingprep.com/api/v4/historical/social-sentiment?symbol=${symbol}&page=0&apikey=dCeN43gf03SvvRm1E20QYfZMABCTJULc`
-				);
-				const data = await response.json();
-				return { symbol: symbol, sentimentData: data[0] };
-			});
+  const columns = [
+    { key: 'symbol', label: 'Symbol' },
+    { key: 'sentiment', label: 'Sentiment', render: (value) => (
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+        value === 'Bullish' ? 'bg-green-100 text-green-800' :
+        value === 'Bearish' ? 'bg-red-100 text-red-800' :
+        'bg-gray-100 text-gray-800'
+      }`}>
+        {value}
+      </span>
+    )},
+    { key: 'confidence', label: 'Confidence', render: (value) => `${value}%` },
+    { key: 'price', label: 'Price', render: (value) => `$${value.toFixed(2)}` },
+    { key: 'change', label: 'Change', render: (value) => (
+      <span className={value >= 0 ? 'text-green-600' : 'text-red-600'}>
+        {value >= 0 ? '+' : ''}{value.toFixed(2)}%
+      </span>
+    )},
+    { key: 'volume', label: 'Volume', render: (value) => value.toLocaleString() }
+  ];
 
-			const results = await Promise.all(promises);
-			setRowData(results);
-		} catch (error) {
-			console.error("Error fetching sentiments:", error);
-		}
-	};
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500 dark:text-gray-400">Loading sentiment data...</div>
+      </div>
+    );
+  }
 
-	const getSentimentType = (sentiment) => {
-		if (typeof sentiment === "undefined") {
-			return "N/A";
-		} else if (sentiment < 0.4) {
-			return "📉 Bearish";
-		} else if (sentiment > 0.75) {
-			return "📈 Bullish";
-		} else {
-			return "⚖️ Neutral";
-		}
-	};
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Market Sentiment Analysis
+        </h1>
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          Last updated: {new Date().toLocaleString()}
+        </div>
+      </div>
 
-	const resizeColumnsToFit = () => {
-		if (gridApi.current) {
-			gridApi.current.sizeColumnsToFit();
-		}
-	};
-
-	const onGridReady = (params) => {
-		gridApi.current = params.api;
-		resizeColumnsToFit();
-	};
-
-	const columns = [
-		{
-			headerName: "Stock Name",
-			field: "symbol",
-			flex: 1,
-			cellStyle: { textAlign: "center" },
-		},
-		{
-			headerName: "Sentiment Score",
-			field: "sentimentData.stocktwitsSentiment",
-			flex: 1,
-			cellStyle: { textAlign: "center" },
-		},
-		{
-			headerName: "Sentiment",
-			valueFormatter: ({ data }) =>
-				getSentimentType(data.sentimentData.stocktwitsSentiment),
-			flex: 1,
-			cellStyle: { textAlign: "center" },
-		},
-	];
-
-	const handleSearchChange = (event) => {
-		setSearchQuery(event.target.value);
-	};
-
-	const handleSearch = async () => {
-		try {
-			const response = await fetch(
-				`https://financialmodelingprep.com/api/v3/search?query=${searchQuery}&limit=1&exchange=NYSE&apikey=dCeN43gf03SvvRm1E20QYfZMABCTJULc`
-			);
-			const data = await response.json();
-
-			const selectedSymbols = data.map((item) => item.symbol);
-			const updatedRowData = [
-				...rowData,
-				...selectedSymbols.map((symbol) => ({
-					symbol,
-					sentimentData: {},
-				})),
-			];
-
-			localStorage.setItem(
-				"addedStocks",
-				JSON.stringify(updatedRowData)
-			);
-
-			const newSymbols = selectedSymbols.filter(
-				(symbol) => !rowData.find((item) => item.symbol === symbol)
-			);
-			const promises = newSymbols.map(async (symbol) => {
-				const response = await fetch(
-					`https://financialmodelingprep.com/api/v4/historical/social-sentiment?symbol=${symbol}&page=0&apikey=dCeN43gf03SvvRm1E20QYfZMABCTJULc`
-				);
-				const data = await response.json();
-				return { symbol: symbol, sentimentData: data[0] };
-			});
-
-			const results = await Promise.all(promises);
-			setRowData((prevData) => [...prevData, ...results]);
-		} catch (error) {
-			console.error("Error fetching symbols:", error);
-		}
-	};
-
-	return (
-		<div
-			className="centered-container"
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				height: "100vh",
-				paddingBottom: "5em",
-			}}
-		>
-			<h1 className="text-white text-4xl font-bold font-poppins p-8">
-				Stock Sentiments
-			</h1>
-			<div style={{ display: "flex", justifyContent: "flex-end" }}>
-				<input
-					type="text"
-					className="bg-secondary-dark-bg p-2 m-4 rounded-lg"
-					placeholder="Search symbols..."
-					value={searchQuery}
-					onChange={handleSearchChange}
-					style={{
-						marginRight: "0.5em",
-						border: "1px solid #ffffff",
-						borderRadius: "10px",
-						padding: "10px",
-						cursor: "pointer",
-						outline: "none",
-						color: "white",
-					}}
-				/>
-				<button
-					onClick={handleSearch}
-					style={{
-						background: "none",
-						border: "none",
-						cursor: "pointer",
-						outline: "none",
-					}}
-				>
-					<FaSearch size={20} color="#ffffff" />
-				</button>
-			</div>
-			<style>{`.ag-header-cell-label { justify-content: center; }`}</style>
-			<div
-				className="ag-theme-quartz-dark"
-				style={{ width: "70%", flex: "1" }}
-			>
-				<AgGridReact
-					rowData={rowData}
-					columnDefs={columns}
-					onGridReady={onGridReady}
-				/>
-			</div>
-		</div>
-	);
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        <DataTable
+          data={sentimentData}
+          columns={columns}
+          className="p-6"
+        />
+      </div>
+    </div>
+  );
 };
 
 export default SentimentPage;

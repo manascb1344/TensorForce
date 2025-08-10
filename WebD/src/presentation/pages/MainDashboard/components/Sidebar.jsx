@@ -2,13 +2,13 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { MdOutlineCancel } from "react-icons/md";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import { links } from "../data/dummy";
-import { useStateContext } from "../contexts/ContextProvider";
+import { useAppContext } from "../../../providers/AppContextProvider";
+import { useTheme } from "../../../hooks/useTheme";
 
 const Sidebar = () => {
-	const { activeMenu, setActiveMenu, screenSize, currentColor } =
-		useStateContext();
+	const { activeMenu, setActiveMenu, screenSize } = useAppContext();
+	const { theme } = useTheme();
 
 	const handleCloseSidebar = () => {
 		if (activeMenu && screenSize <= 900) {
@@ -62,7 +62,7 @@ const Sidebar = () => {
 										to={`/dashboardv2/${link.name}`}
 										key={link.name}
 										style={({ isActive }) => ({
-											backgroundColor: isActive ? currentColor : "",
+											backgroundColor: isActive ? theme.color : "",
 										})}
 										onClick={handleCloseSidebar}
 										className={({ isActive }) =>

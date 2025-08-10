@@ -1,292 +1,114 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from "react";
+import { BsArrowUp, BsArrowDown } from "react-icons/bs";
 
-const Container = styled.div`
-	margin: 0 auto;
-	padding: 20px;
-	border-radius: 16px;
-`;
+const ToggleButton = ({ value, selected, onChange, children, className = "" }) => (
+  <button
+    type="button"
+    onClick={() => onChange(value)}
+    className={`px-4 py-2 border rounded-l-md transition-colors ${
+      selected === value
+        ? "bg-blue-500 text-white border-blue-500"
+        : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+    } ${className}`}
+  >
+    {children}
+  </button>
+);
 
-const Title = styled.h1`
-	text-align: center;
-	margin-bottom: 20px;
-`;
-
-const InputWrapper = styled.div`
-	margin-bottom: 15px;
-	display: flex;
-	align-items: center;
-`;
-
-const Label = styled.label`
-	flex: 1;
-	margin-right: 10px;
-`;
-
-const InputField = styled.input`
-	flex: 2;
-	width: calc(100% - 10px);
-	padding: 8px;
-	border-radius: 4px;
-	background-color: #33373e;
-	color: white;
-	border-color: white;
-	border: 1px solid #ccc;
-`;
-
-const SelectField = styled.select`
-	width: 66%;
-	padding: 8px;
-	border-radius: 4px;
-	background-color: #33373e;
-	color: white;
-	border: 1px solid #ccc;
-`;
-
-const SubmitButton = styled.button`
-	color: white;
-	padding: 10px 20px;
-	font-size: 18px;
-	width: 100%;
-	cursor: pointer;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	border-radius: 10px;
-`;
+const ToggleButtonGroup = ({ value, onChange, children }) => (
+  <div className="flex">
+    {React.Children.map(children, (child, index) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          selected: value,
+          onChange,
+          className: index === 0 ? "rounded-l-md" : index === React.Children.count(children) - 1 ? "rounded-r-md border-l-0" : "border-l-0"
+        });
+      }
+      return child;
+    })}
+  </div>
+);
 
 const QuickTrade = () => {
-	const [isBuy, setIsBuy] = useState(true);
-	const [symbol, setSymbol] = useState("");
-	const [marketPrice, setMarketPrice] = useState(0);
-	const [orderType, setOrderType] = useState("market");
-	const [quantity, setQuantity] = useState(1);
-	const [estimatedCost, setEstimatedCost] = useState(0);
-	const [timeInForce, setTimeInForce] = useState("day");
-	const [alignment, setAlignment] = useState("buy");
-	const [limitPrice, setLimitPrice] = useState(0);
+  const [tradeType, setTradeType] = useState("buy");
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(0);
 
-	useEffect(() => {
-		let fetchMarketPrice = null;
-		if (symbol) {
-			const options = {
-				method: "GET",
-				headers: {
-					accept: "application/json",
-					"APCA-API-KEY-ID": import.meta.env.VITE_ALPACA_API_KEY,
-					"APCA-API-SECRET-KEY": import.meta.env
-						.VITE_ALPACA_API_SECRET,
-				},
-			};
+  const handleTrade = () => {
+    // Trade logic here
+    console.log(`${tradeType} ${quantity} shares at $${price}`);
+  };
 
-			fetchMarketPrice = async () => {
-				try {
-					const response = await fetch(
-						`https://data.alpaca.markets/v2/stocks/${symbol}/bars/latest?feed=iex`,
-						options
-					);
-					const data = await response.json();
-					if (data.bar && data.bar.c) {
-						setMarketPrice(data.bar.c);
-						setEstimatedCost(data.bar.c * quantity);
-					}
-				} catch (error) {
-					console.error("Error fetching market price:", error);
-				}
-			};
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+        Quick Trade
+      </h3>
+      
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Trade Type
+          </label>
+          <ToggleButtonGroup value={tradeType} onChange={setTradeType}>
+            <ToggleButton value="buy">
+              <BsArrowUp className="inline mr-1" />
+              Buy
+            </ToggleButton>
+            <ToggleButton value="sell">
+              <BsArrowDown className="inline mr-1" />
+              Sell
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
 
-			fetchMarketPrice();
-		}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Quantity
+          </label>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            min="1"
+          />
+        </div>
 
-		return () => {
-			if (fetchMarketPrice) {
-				fetchMarketPrice = null;
-			}
-		};
-	}, [symbol, quantity]);
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Price per Share
+          </label>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            step="0.01"
+            min="0"
+          />
+        </div>
 
-	const handleChange = (event, newAlignment) => {
-		setIsBuy(newAlignment === "buy");
-		setAlignment(newAlignment);
-	};
+        <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-md">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Total: ${(quantity * price).toFixed(2)}
+          </p>
+        </div>
 
-	const handleSymbolChange = (event) => {
-		setSymbol(event.target.value);
-	};
-
-	const handleOrderTypeChange = (event) => {
-		setOrderType(event.target.value);
-	};
-
-	const handleQuantityChange = (event) => {
-		const newQuantity = parseInt(event.target.value, 10) || 0;
-		setQuantity(newQuantity);
-		setEstimatedCost(newQuantity * marketPrice);
-	};
-
-	const handleTimeInForceChange = (event) => {
-		setTimeInForce(event.target.value);
-	};
-
-	const handleLimitPriceChange = (event) => {
-		setLimitPrice(event.target.value);
-	};
-
-	const handleSubmit = async () => {
-		const options = {
-			method: "POST",
-			headers: {
-				accept: "application/json",
-				"APCA-API-KEY-ID": import.meta.env.VITE_ALPACA_API_KEY,
-				"APCA-API-SECRET-KEY": import.meta.env
-					.VITE_ALPACA_API_SECRET,
-			},
-			body: JSON.stringify({
-				side: alignment,
-				type: orderType,
-				time_in_force: timeInForce,
-				symbol: symbol,
-				qty: quantity.toString(),
-				...(orderType === "limit" && { limit_price: limitPrice }),
-			}),
-		};
-
-		try {
-			const response = await fetch(
-				"https://paper-api.alpaca.markets/v2/orders",
-				options
-			);
-			const data = await response.json();
-			if (data.message) {
-				toast.error(data.message);
-			} else {
-				toast.success("Order placed successfully!");
-			}
-		} catch (error) {
-			console.error("Error submitting order:", error);
-			toast.error("Error submitting order. Please try again.");
-		}
-	};
-
-	return (
-		<div className="rounded-2xl md:w-400  mt-3 mb-3">
-			<Container className="bg-secondary-dark-bg border-color text-gray-200">
-				<div className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-gray-200 text-center">
-					Quick Trade
-				</div>
-				<div className="flex justify-center m-6">
-					<ToggleButtonGroup
-						color="primary"
-						value={alignment}
-						exclusive={true}
-						onChange={handleChange}
-						aria-label="Platform"
-					>
-						<ToggleButton
-							value="buy"
-							style={{
-								backgroundColor:
-									alignment === "buy" ? "green" : "gray",
-								color: "white",
-							}}
-						>
-							BUY
-						</ToggleButton>
-						<ToggleButton
-							value="sell"
-							style={{
-								backgroundColor:
-									alignment === "sell" ? "red" : "gray",
-								color: "white",
-							}}
-						>
-							SELL
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</div>
-
-				<InputWrapper>
-					<Label htmlFor="symbol">Symbol:</Label>
-					<InputField
-						type="text"
-						id="symbol"
-						value={symbol}
-						onChange={handleSymbolChange}
-					/>
-				</InputWrapper>
-
-				<InputWrapper>
-					<Label htmlFor="orderType">Order Type:</Label>
-					<SelectField
-						id="orderType"
-						value={orderType}
-						onChange={handleOrderTypeChange}
-					>
-						<option value="market">Market Order</option>
-						<option value="limit">Limit Order</option>
-					</SelectField>
-				</InputWrapper>
-
-				{orderType === "limit" && (
-					<InputWrapper>
-						<Label htmlFor="limitPrice">Limit Price:</Label>
-						<InputField
-							type="number"
-							id="limitPrice"
-							value={limitPrice}
-							onChange={handleLimitPriceChange}
-							min={0}
-						/>
-					</InputWrapper>
-				)}
-
-				<InputWrapper>
-					<Label htmlFor="quantity">Quantity:</Label>
-					<InputField
-						type="number"
-						id="quantity"
-						value={quantity}
-						onChange={handleQuantityChange}
-						min={0}
-					/>
-				</InputWrapper>
-
-				<InputWrapper>
-					<Label htmlFor="estimatedCost">Estimated Cost:</Label>
-					<span>${estimatedCost}</span>
-				</InputWrapper>
-
-				<InputWrapper>
-					<Label htmlFor="timeInForce">Time in Force:</Label>
-					<SelectField
-						id="timeInForce"
-						value={timeInForce}
-						onChange={handleTimeInForceChange}
-					>
-						<option value="day">Day Order: Valid for one day</option>
-						<option value="gtc">GTC: Good till Canceled</option>
-					</SelectField>
-				</InputWrapper>
-
-				<SubmitButton
-					onClick={handleSubmit}
-					style={{
-						backgroundColor: alignment === "buy" ? "green" : "red",
-					}}
-				>
-					Place Order
-				</SubmitButton>
-			</Container>
-			<ToastContainer
-				position="top-right"
-				autoClose={2000}
-				hideProgressBar
-			/>
-		</div>
-	);
+        <button
+          onClick={handleTrade}
+          className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
+            tradeType === "buy"
+              ? "bg-green-500 hover:bg-green-600 text-white"
+              : "bg-red-500 hover:bg-red-600 text-white"
+          }`}
+        >
+          {tradeType === "buy" ? "Buy" : "Sell"} Shares
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default QuickTrade;

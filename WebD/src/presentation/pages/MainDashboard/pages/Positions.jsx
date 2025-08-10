@@ -1,228 +1,214 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-import ReactApexChart from "react-apexcharts";
-import { HashLoader } from "react-spinners";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../../hooks/useAuth";
+import { AlpacaApiService } from "../../../../infrastructure/api/AlpacaApiService";
 
-const options = {
-	method: "GET",
-	headers: {
-		accept: "application/json",
-		"APCA-API-KEY-ID": import.meta.env.VITE_ALPACA_API_KEY,
-		"APCA-API-SECRET-KEY": import.meta.env.VITE_ALPACA_API_SECRET,
-	},
+// Lightweight Table Component
+const DataTable = ({ data, columns, className = "" }) => {
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+    
+    if (typeof aValue === 'string') {
+      return sortDirection === 'asc' 
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+    
+    return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+  });
+
+  return (
+    <div className={`overflow-x-auto ${className}`}>
+      <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        <thead className="bg-gray-50 dark:bg-gray-700">
+          <tr>
+            {columns.map((column) => (
+              <th
+                key={column.key}
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                onClick={() => handleSort(column.key)}
+              >
+                <div className="flex items-center">
+                  {column.label}
+                  {sortField === column.key && (
+                    <span className="ml-1">
+                      {sortDirection === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          {sortedData.map((row, index) => (
+            <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              {columns.map((column) => (
+                <td
+                  key={column.key}
+                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200"
+                >
+                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
-const Loader = () => (
-	<div className="flex flex-col items-center justify-center h-full">
-		<HashLoader className="" color="#79E6EA" size={60} />
-		<p className="mt-8 text-white text-2xl font-semibold animate-pulse">
-			Loading...
-		</p>
-	</div>
-);
+// Lightweight Chart Component
+const SimpleChart = ({ data, title }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+          {title}
+        </h3>
+        <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+          No data available
+        </div>
+      </div>
+    );
+  }
 
-const FinancialPositionsPage = () => {
-	const [loading, setLoading] = useState(true);
-	const [positions, setPositions] = useState([]);
-	const [buyCost, setBuyCost] = useState(0);
-	const [sellCostBasis, setSellCostBasis] = useState(0);
-	const [totalBuyingPower, setTotalBuyingPower] = useState(0);
+  const maxValue = Math.max(...data.map(d => d.value));
 
-	useEffect(() => {
-		Promise.all([
-			fetch(
-				"https://paper-api.alpaca.markets/v2/positions",
-				options
-			),
-			fetch("https://paper-api.alpaca.markets/v2/account", options),
-		])
-			.then(([positionsRes, accountRes]) =>
-				Promise.all([positionsRes.json(), accountRes.json()])
-			)
-			.then(([positionsData, accountData]) => {
-				const rowData = positionsData.map((position) => ({
-					Symbol: position.symbol,
-					Quantity: position.qty,
-					"Avg Entry Price": parseFloat(position.avg_entry_price),
-					Side: position.side,
-					"Market Value": parseFloat(position.market_value),
-					"Unrealized P/L": parseFloat(position.unrealized_pl),
-					"Current Price": parseFloat(position.current_price),
-				}));
-
-				let buyTotal = 0;
-				let sellTotal = 0;
-				rowData.forEach((position) => {
-					if (position.Side === "long") {
-						buyTotal +=
-							position["Avg Entry Price"] * position.Quantity;
-					} else if (position.Side === "short") {
-						sellTotal +=
-							position["Avg Entry Price"] * position.Quantity;
-					}
-				});
-
-				setBuyCost(buyTotal);
-				setSellCostBasis(sellTotal);
-				setTotalBuyingPower(parseFloat(accountData.buying_power));
-				setPositions(rowData);
-			})
-			.catch((err) => console.error(err))
-			.finally(() => setLoading(false));
-	}, []);
-
-	const colDefs = useMemo(
-		() => [
-			{ field: "Symbol" },
-			{ field: "Quantity" },
-			{ field: "Avg Entry Price" },
-			{ field: "Side" },
-			{ field: "Market Value" },
-			{ field: "Unrealized P/L" },
-			{ field: "Current Price" },
-		],
-		[]
-	);
-
-	if (loading) {
-		return <Loader />;
-	}
-
-	return (
-		<div
-			className="centered-container"
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				height: "100vh",
-				paddingBottom: "5em",
-			}}
-		>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "space-around",
-					width: "100%",
-				}}
-			>
-				<ApexBuySellTotalChart
-					buyTotal={buyCost}
-					sellTotal={sellCostBasis}
-					chartId="chart1"
-				/>
-				<ApexValueUsedChart
-					buyTotal={buyCost}
-					sellTotal={sellCostBasis}
-					totalBuyingPower={totalBuyingPower}
-					chartId="chart2"
-				/>
-			</div>
-			<div
-				className="ag-theme-quartz-dark"
-				style={{ width: "88%", flex: "1" }}
-			>
-				<AgGridReact rowData={positions} columnDefs={colDefs} />
-			</div>
-		</div>
-	);
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+        {title}
+      </h3>
+      <div className="space-y-2">
+        {data.map((item, index) => (
+          <div key={index} className="flex items-center">
+            <span className="w-20 text-sm text-gray-600 dark:text-gray-400">
+              {item.label}
+            </span>
+            <div className="flex-1 mx-2">
+              <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div
+                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(item.value / maxValue) * 100}%` }}
+                />
+              </div>
+            </div>
+            <span className="w-16 text-sm text-gray-900 dark:text-gray-200 text-right">
+              {item.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
-const ApexBuySellTotalChart = ({ buyTotal, sellTotal, chartId }) => {
-	const seriesData = useMemo(
-		() => [buyTotal, -sellTotal],
-		[buyTotal, sellTotal]
-	);
-	const labels = useMemo(() => ["Buy Total", "Sell Total"], []);
+const Positions = () => {
+  const { user } = useAuth();
+  const [positions, setPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-	const options = {
-		chart: {
-			type: "donut",
-			foreColor: "#FFFFFF",
-		},
-		labels: labels,
-		colors: ["#59CE8F", "#FF1E00"],
-		plotOptions: {
-			pie: {
-				dataLabels: {
-					style: {
-						colors: ["#FFFFFF"],
-						fontSize: "13px",
-					},
-				},
-			},
-		},
-	};
+  const apiService = new AlpacaApiService();
 
-	return (
-		<div style={{ width: "25%", marginBottom: "2em" }}>
-			<div id={chartId}>
-				<ReactApexChart
-					options={options}
-					series={seriesData}
-					type="donut"
-				/>
-			</div>
-		</div>
-	);
+  useEffect(() => {
+    const fetchPositions = async () => {
+      try {
+        setLoading(true);
+        const data = await apiService.getPositions();
+        setPositions(data || []);
+      } catch (err) {
+        console.error('Error fetching positions:', err);
+        setError('Failed to load positions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPositions();
+  }, []);
+
+  const columns = [
+    { key: 'symbol', label: 'Symbol' },
+    { key: 'qty', label: 'Quantity' },
+    { key: 'market_value', label: 'Market Value', render: (value) => `$${parseFloat(value).toFixed(2)}` },
+    { key: 'unrealized_pl', label: 'Unrealized P&L', render: (value) => (
+      <span className={parseFloat(value) >= 0 ? 'text-green-600' : 'text-red-600'}>
+        ${parseFloat(value).toFixed(2)}
+      </span>
+    )},
+    { key: 'unrealized_plpc', label: 'P&L %', render: (value) => (
+      <span className={parseFloat(value) >= 0 ? 'text-green-600' : 'text-red-600'}>
+        {parseFloat(value).toFixed(2)}%
+      </span>
+    )},
+  ];
+
+  const chartData = positions.slice(0, 5).map(pos => ({
+    label: pos.symbol,
+    value: Math.abs(parseFloat(pos.market_value))
+  }));
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-500 dark:text-gray-400">Loading positions...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Positions
+        </h1>
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          Total Positions: {positions.length}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <DataTable
+            data={positions}
+            columns={columns}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm"
+          />
+        </div>
+        <div>
+          <SimpleChart
+            data={chartData}
+            title="Top Positions by Value"
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
-const ApexValueUsedChart = ({
-	buyTotal,
-	sellTotal,
-	chartId,
-	totalBuyingPower,
-}) => {
-	const usedBuyingPower = useMemo(
-		() => buyTotal - sellTotal,
-		[buyTotal, sellTotal]
-	);
-	const availableBuyingPower = useMemo(
-		() => totalBuyingPower - usedBuyingPower,
-		[totalBuyingPower, usedBuyingPower]
-	);
-
-	const seriesData = useMemo(
-		() => [usedBuyingPower, availableBuyingPower],
-		[usedBuyingPower, availableBuyingPower]
-	);
-	const labels = useMemo(
-		() => ["Used Buying Power", "Available Buying Power"],
-		[]
-	);
-
-	const options = {
-		chart: {
-			type: "donut",
-			foreColor: "#FFFFFF",
-		},
-		labels: labels,
-		colors: ["#FF1E00", "#59CE8F"],
-		plotOptions: {
-			pie: {
-				dataLabels: {
-					style: {
-						colors: ["#FFFFFF"],
-						fontSize: "13px",
-					},
-				},
-			},
-		},
-	};
-
-	return (
-		<div style={{ width: "31%", marginBottom: "2em" }}>
-			<div id={chartId}>
-				<ReactApexChart
-					options={options}
-					series={seriesData}
-					type="donut"
-				/>
-			</div>
-		</div>
-	);
-};
-
-export default FinancialPositionsPage;
+export default Positions;
