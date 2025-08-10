@@ -13,8 +13,9 @@ import LoadingComponent from '../components/LoadingComponent.jsx';
  * Redirects to login if user is not authenticated
  */
 const ProtectedRoute = ({ element }) => {
-	const { isAuthenticated } = useAuth();
-	return isAuthenticated ? element : <Navigate to='/login' />;
+    const { isAuthenticated, rawUser } = useAuth();
+    const authed = isAuthenticated || !!rawUser;
+    return authed ? element : <Navigate to='/login' />;
 };
 
 /**
