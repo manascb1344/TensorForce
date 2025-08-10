@@ -9,21 +9,30 @@ import { User } from '../../core/domain/User.js';
  * Handles Auth0 integration and user authentication
  */
 export const useAuth = () => {
-	const { user, isAuthenticated, isLoading, error } = useAuth0();
+    const { user, isAuthenticated, isLoading, error, getAccessTokenSilently } = useAuth0();
 	const [authUser, setAuthUser] = useState(null);
 	const [isAuthenticating, setIsAuthenticating] = useState(false);
 	const [authError, setAuthError] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
 
 	const userRepository = new UserApiService();
 	const authenticateUseCase = new AuthenticateUserUseCase(userRepository);
 
 	useEffect(() => {
-		const handleAuthentication = async () => {
+        const handleAuthentication = async () => {
 			if (isAuthenticated && user && !authUser) {
 				setIsAuthenticating(true);
 				setAuthError(null);
 
 				try {
+                    let token = null;
+                    try {
+                        token = await getAccessTokenSilently();
+                        setAccessToken(token);
+                    } catch (e) {
+                        // ignore token fetch errors; proceed without token
+                    }
+
 					const result = await authenticateUseCase.execute(user);
 
 					if (result.success) {
@@ -53,6 +62,7 @@ export const useAuth = () => {
 		isLoading: isLoading || isAuthenticating,
 		error: authError || error,
 		logout,
-		rawUser: user, // Original Auth0 user object
+        rawUser: user, // Original Auth0 user object
+        accessToken,
 	};
 };

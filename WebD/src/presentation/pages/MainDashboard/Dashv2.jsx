@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './material.css';
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import {
 	Dashboard,
@@ -69,15 +69,8 @@ const Dashv2 = () => {
 		sendUserData();
 	}, [isAuthenticated, user]);
 
-	return (
-		<Auth0Provider
-			domain='dev-ovhg6woj2jzt3u4i.au.auth0.com'
-			clientId='pEXH5RDJNSLcLz8VAH3Ac5kpI4b6gq8w'
-			authorizationParams={{
-				redirect_uri: window.location.origin,
-			}}
-		>
-			<div className={currentMode === 'Dark' ? 'dark' : ''}>
+    return (
+            <div className={currentMode === 'Dark' ? 'dark' : ''}>
 				<div className='flex relative dark:bg-main-dark-bg'>
 					{activeMenu ? (
 						<div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
@@ -117,8 +110,7 @@ const Dashv2 = () => {
 						</div>
 					</div>
 				</div>
-			</div>
-		</Auth0Provider>
+            </div>
 	);
 };
 

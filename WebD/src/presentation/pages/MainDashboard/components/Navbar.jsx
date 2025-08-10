@@ -43,7 +43,7 @@ const Navbar = () => {
 		setScreenSize,
 	} = useAppContext();
 
-	const { user, isLoading } = useAuth();
+    const { user, rawUser, isLoading } = useAuth();
 	const { theme } = useTheme();
 
 	const handleResize = useCallback(() => {
@@ -87,16 +87,16 @@ const Navbar = () => {
 							}))
 						}
 					>
-						<img
-							className='rounded-full w-8 h-8'
-							src={user?.picture || svg}
-							referrerPolicy='no-referrer'
-							alt='User Avatar'
-						/>
+                        <img
+                            className='rounded-full w-8 h-8'
+                            src={(user?.picture || rawUser?.picture) || svg}
+                            referrerPolicy='no-referrer'
+                            alt='User Avatar'
+                        />
 						<p>
 							<span className='text-gray-400 text-14'> Hi,</span>
 							<span className='text-gray-400 font-bold ml-1 text-14'>
-								{user?.name || 'User'}
+                                {user?.name || rawUser?.name || 'User'}
 							</span>
 						</p>
 						<MdKeyboardArrowDown className='text-gray-400 text-14' />

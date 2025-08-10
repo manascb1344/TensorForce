@@ -34,11 +34,7 @@ const AppRoutes = () => {
 			<Route path='/' element={<LandingPage />} />
 			<Route path='/login' element={<LoginPage />} />
 			<Route path='/contact' element={<ContactPage />} />
-            <Route path='/dashboardv2/*' element={<Navigate to='/dashboard' replace />} />
-			<Route
-				path='/dashboard/*'
-				element={<ProtectedRoute element={<DashboardPage />} />}
-			/>
+			<Route path='/dashboard/*' element={<ProtectedRoute element={<DashboardPage />} />} />
 			<Route path='*' element={<ErrorPage />} />
 		</Routes>
 	);
